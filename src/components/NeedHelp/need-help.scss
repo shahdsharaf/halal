@@ -1,0 +1,12 @@
+.need-help {
+  padding: 30px;
+  &__title {
+    font-weight: bold !important;
+  }
+  &__description {
+    font-size: 18px;
+  }
+  .flag {
+    width: 70px;
+  }
+}

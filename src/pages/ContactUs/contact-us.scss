@@ -1,0 +1,29 @@
+.contact-us {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+
+  &__needhelp {
+    flex: 1;
+    order: 1;
+  }
+
+  &__form {
+    flex: 1;
+    order: 2;
+  }
+
+  @media (max-width: 1150px) {
+    flex-direction: column;
+
+    &__needhelp {
+      order: 2;
+    }
+
+    &__form {
+      order: 1;
+      width: 100%;
+    }
+  }
+}

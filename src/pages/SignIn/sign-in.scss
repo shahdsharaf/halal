@@ -1,0 +1,25 @@
+.signin-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.signin-card {
+  width: 90%;
+  border-radius: 16px !important;
+}
+
+.signin-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 0 !important;
+  background-color: #eee;
+  align-items: center !important;
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: stretch;
+  }
+}

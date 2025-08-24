@@ -1,0 +1,31 @@
+.signin-footer {
+  margin-top: 50px;
+  ul {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 1.5rem !important;
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+
+    li {
+      a {
+        text-decoration: none !important;
+        color: #000 !important;
+        transition: all 0.3s ease !important;
+
+        &:hover {
+          color: #fff !important;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 900px) {
+    ul {
+      flex-direction: column !important;
+      gap: 1rem !important;
+    }
+  }
+}

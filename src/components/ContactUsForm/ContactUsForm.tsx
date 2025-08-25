@@ -5,11 +5,11 @@ import {
   Button,
   Select,
   MenuItem,
-  InputLabel,
   FormControl,
   FormHelperText,
   Box,
   Typography,
+  FormLabel,
 } from "@mui/material";
 
 type FormInputs = {
@@ -53,14 +53,25 @@ export default function ContactUsForm() {
         control={control}
         rules={{ required: "First name is required" }}
         render={({ field }) => (
-          <TextField
-            {...field}
-            fullWidth
-            label="First Name *"
-            margin="normal"
-            error={!!errors.firstName}
-            helperText={errors.firstName?.message}
-          />
+          <>
+            <FormLabel
+              required
+              sx={{
+                color: "text.primary",
+                fontWeight: "bold",
+                "& .MuiFormLabel-asterisk": { color: "red" },
+              }}
+            >
+              First name
+            </FormLabel>
+            <TextField
+              {...field}
+              fullWidth
+              margin="normal"
+              error={!!errors.firstName}
+              helperText={errors.firstName?.message}
+            />
+          </>
         )}
       />
 
@@ -69,14 +80,25 @@ export default function ContactUsForm() {
         control={control}
         rules={{ required: "Last name is required" }}
         render={({ field }) => (
-          <TextField
-            {...field}
-            fullWidth
-            label="Last Name *"
-            margin="normal"
-            error={!!errors.lastName}
-            helperText={errors.lastName?.message}
-          />
+          <>
+            <FormLabel
+              required
+              sx={{
+                color: "text.primary",
+                fontWeight: "bold",
+                "& .MuiFormLabel-asterisk": { color: "red" },
+              }}
+            >
+              Last name
+            </FormLabel>
+            <TextField
+              {...field}
+              fullWidth
+              margin="normal"
+              error={!!errors.lastName}
+              helperText={errors.lastName?.message}
+            />
+          </>
         )}
       />
 
@@ -91,15 +113,26 @@ export default function ContactUsForm() {
           },
         }}
         render={({ field }) => (
-          <TextField
-            {...field}
-            fullWidth
-            label="Email *"
-            type="email"
-            margin="normal"
-            error={!!errors.email}
-            helperText={errors.email?.message}
-          />
+          <>
+            <FormLabel
+              required
+              sx={{
+                color: "text.primary",
+                fontWeight: "bold",
+                "& .MuiFormLabel-asterisk": { color: "red" },
+              }}
+            >
+              Email
+            </FormLabel>
+            <TextField
+              {...field}
+              fullWidth
+              type="email"
+              margin="normal"
+              error={!!errors.email}
+              helperText={errors.email?.message}
+            />
+          </>
         )}
       />
 
@@ -108,14 +141,25 @@ export default function ContactUsForm() {
         control={control}
         rules={{ required: "Phone number is required" }}
         render={({ field }) => (
-          <TextField
-            {...field}
-            fullWidth
-            label="Phone Number *"
-            margin="normal"
-            error={!!errors.phoneNumber}
-            helperText={errors.phoneNumber?.message}
-          />
+          <>
+            <FormLabel
+              required
+              sx={{
+                color: "text.primary",
+                fontWeight: "bold",
+                "& .MuiFormLabel-asterisk": { color: "red" },
+              }}
+            >
+              Phone Number
+            </FormLabel>
+            <TextField
+              {...field}
+              fullWidth
+              margin="normal"
+              error={!!errors.phoneNumber}
+              helperText={errors.phoneNumber?.message}
+            />
+          </>
         )}
       />
 
@@ -125,9 +169,18 @@ export default function ContactUsForm() {
         rules={{ required: "Country is required" }}
         render={({ field }) => (
           <FormControl fullWidth margin="normal" error={!!errors.country}>
-            <InputLabel>Country of Origin *</InputLabel>
-            <Select {...field} label="Country of Origin *">
-              <MenuItem value="">Select Country of Origin</MenuItem>
+            <FormLabel
+              required
+              sx={{
+                color: "text.primary",
+                fontWeight: "bold",
+                "& .MuiFormLabel-asterisk": { color: "red" },
+              }}
+            >
+              Country of Origin
+            </FormLabel>
+            <Select {...field} displayEmpty>
+              <MenuItem value="">Select Country</MenuItem>
               <MenuItem value="usa">United States</MenuItem>
               <MenuItem value="canada">Canada</MenuItem>
               <MenuItem value="uk">United Kingdom</MenuItem>
@@ -145,8 +198,17 @@ export default function ContactUsForm() {
         rules={{ required: "Subject is required" }}
         render={({ field }) => (
           <FormControl fullWidth margin="normal" error={!!errors.subject}>
-            <InputLabel>Choose Subject *</InputLabel>
-            <Select {...field} label="Choose Subject *">
+            <FormLabel
+              required
+              sx={{
+                color: "text.primary",
+                fontWeight: "bold",
+                "& .MuiFormLabel-asterisk": { color: "red" },
+              }}
+            >
+              Subject
+            </FormLabel>
+            <Select {...field} displayEmpty>
               <MenuItem value="">Choose your subject</MenuItem>
               <MenuItem value="general">General Inquiry</MenuItem>
               <MenuItem value="support">Support</MenuItem>
@@ -166,18 +228,30 @@ export default function ContactUsForm() {
           maxLength: { value: 3000, message: "Maximum 3000 characters" },
         }}
         render={({ field }) => (
-          <TextField
-            {...field}
-            fullWidth
-            label="Your Message *"
-            margin="normal"
-            multiline
-            rows={4}
-            error={!!errors.message}
-            helperText={
-              errors.message?.message || "Maximum letter 3000 for your message"
-            }
-          />
+          <>
+            <FormLabel
+              required
+              sx={{
+                color: "text.primary",
+                fontWeight: "bold",
+                "& .MuiFormLabel-asterisk": { color: "red" },
+              }}
+            >
+              Your Message
+            </FormLabel>
+            <TextField
+              {...field}
+              fullWidth
+              margin="normal"
+              multiline
+              rows={4}
+              error={!!errors.message}
+              helperText={
+                errors.message?.message ||
+                "Maximum letter 3000 for your message"
+              }
+            />
+          </>
         )}
       />
 

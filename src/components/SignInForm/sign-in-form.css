@@ -1,0 +1,15 @@
+@media (min-width: 770px) {
+  .signin-form {
+    padding-right: 40px;
+  }
+}
+@media (max-width: 770px) {
+  .signin-form {
+    padding-bottom: 40px;
+  }
+}
+
+.sign-up {
+  display: flex;
+  justify-content: center;
+}/*# sourceMappingURL=sign-in-form.css.map */

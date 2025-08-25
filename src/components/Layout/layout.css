@@ -1,0 +1,10 @@
+.footer {
+  background-color: #242424;
+}
+.footer__body {
+  color: white;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}/*# sourceMappingURL=layout.css.map */

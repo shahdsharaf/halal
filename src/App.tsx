@@ -8,7 +8,22 @@ import { AboutUs } from "./pages/AboutUs/AboutUs";
 import { AccrediationAndCertifications } from "./pages/AccrediationAndCertifictaions/AccrediationAndCertifications";
 import { CertifiedProducts } from "./pages/CertifiedProducts/CertifiedProducts";
 import { SignIn } from "./pages/SignIn/SignIn";
+import { SignUp } from "./pages/SignUp/SignUp";
+import axios from "axios";
+import { useAppSelector } from "./app/hooks";
+import { useEffect } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function App() {
+  const { token } = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (token) {
+      axios.defaults.headers.Authorization = `Bearer ${token}`;
+    }
+  }, [token]);
+
   return (
     <Router>
       <Layout>
@@ -23,8 +38,10 @@ function App() {
           />
           <Route path="/certified-products" element={<CertifiedProducts />} />
           <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
         </Routes>
       </Layout>
+      <ToastContainer position="top-right" autoClose={1500} />
     </Router>
   );
 }

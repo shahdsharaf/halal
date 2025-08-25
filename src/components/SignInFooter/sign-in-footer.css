@@ -1,0 +1,27 @@
+.signin-footer {
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+.signin-footer ul {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 1.5rem !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.signin-footer ul li a {
+  text-decoration: none !important;
+  color: #000 !important;
+  transition: all 0.3s ease !important;
+}
+.signin-footer ul li a:hover {
+  color: #fff !important;
+}
+@media (max-width: 900px) {
+  .signin-footer ul {
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+}/*# sourceMappingURL=sign-in-footer.css.map */

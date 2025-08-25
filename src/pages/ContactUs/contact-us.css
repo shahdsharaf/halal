@@ -1,0 +1,27 @@
+.contact-us {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-bottom: 20px;
+}
+.contact-us__needhelp {
+  flex: 1;
+  order: 1;
+}
+.contact-us__form {
+  flex: 1;
+  order: 2;
+}
+@media (max-width: 1150px) {
+  .contact-us {
+    flex-direction: column;
+  }
+  .contact-us__needhelp {
+    order: 2;
+  }
+  .contact-us__form {
+    order: 1;
+    width: 100%;
+  }
+}/*# sourceMappingURL=contact-us.css.map */

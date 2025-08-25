@@ -18,8 +18,11 @@ import {
 } from "@mui/material";
 import { LockOutlined, DensityMedium } from "@mui/icons-material";
 import HalalLogo from "../../assets/img/halal-logo.svg";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import type { RootState } from "../../app/store";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../features/auth/authSlice";
 import "./navbar.scss";
 
 export const Navbar = () => {
@@ -27,8 +30,15 @@ export const Navbar = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const location = useLocation();
-  const isTransparent = location.pathname === "/";
+  const dispatch = useDispatch();
+  const { isAuthenticated, user } = useSelector(
+    (state: RootState) => state.auth
+  );
+  // const location = useLocation();
+  // const isTransparent = location.pathname === "/";
+  const isTransparent = useSelector(
+    (state: RootState) => state.navbar.isTransparent
+  );
   const navItems = [
     { label: "HOME", path: "/" },
     { label: "ABOUT US", path: "/about-us" },
@@ -44,12 +54,16 @@ export const Navbar = () => {
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
   };
-
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/sign-in");
+  };
   return (
     <>
       <AppBar
         position="static"
         className={`navbar ${isTransparent ? "transparent" : ""}`}
+        // className="navbar"
         elevation={0}
       >
         {" "}
@@ -77,13 +91,29 @@ export const Navbar = () => {
               alignItems="center"
               justifyContent="right"
             >
-              <Button
-                onClick={() => navigate("/sign-in")}
-                startIcon={<LockOutlined />}
-                className="signInBtn"
-              >
-                Sign in
-              </Button>
+              {isAuthenticated ? (
+                <>
+                  <Button
+                    onClick={handleLogout}
+                    startIcon={<LockOutlined />}
+                    className="logoutBtn"
+                    sx={{ fontSize: "0.85rem", color: "#ccc" }}
+                  >
+                    Logout
+                  </Button>
+                  <Typography sx={{ fontSize: "0.9rem", color: "#fff" }}>
+                    {user?.login}
+                  </Typography>
+                </>
+              ) : (
+                <Button
+                  onClick={() => navigate("/sign-in")}
+                  startIcon={<LockOutlined />}
+                  className="signInBtn"
+                >
+                  Sign in
+                </Button>
+              )}
 
               {!isMobile && (
                 <Typography sx={{ fontSize: "0.85rem", color: "#ccc" }}>

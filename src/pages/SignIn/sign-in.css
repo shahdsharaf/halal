@@ -17,7 +17,9 @@
   padding: 0 !important;
   background-color: #eee;
   align-items: center !important;
-  @media (min-width: 768px) {
+}
+@media (min-width: 768px) {
+  .signin-content {
     flex-direction: row;
   }
-}
+}/*# sourceMappingURL=sign-in.css.map */

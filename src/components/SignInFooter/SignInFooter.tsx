@@ -9,19 +9,21 @@ const SignInFooter: React.FC = () => {
           <Link href="/">HOME</Link>
         </li>
         <li>
-          <Link href="/about">ABOUT US</Link>
+          <Link href="/about-us">ABOUT US</Link>
         </li>
         <li>
           <Link href="/services">SERVICES</Link>
         </li>
         <li>
-          <Link href="/products">CERTIFIED PRODUCTS</Link>
+          <Link href="/certified-products">CERTIFIED PRODUCTS</Link>
         </li>
         <li>
-          <Link href="/accreditation">ACCREDITATION & CERTIFICATIONS</Link>
+          <Link href="/accrediation-and-certifications">
+            ACCREDITATION & CERTIFICATIONS
+          </Link>
         </li>
         <li>
-          <Link href="/contact">CONTACT US</Link>
+          <Link href="/contact-us">CONTACT US</Link>
         </li>
       </ul>
     </footer>

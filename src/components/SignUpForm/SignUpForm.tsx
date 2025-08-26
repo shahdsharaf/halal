@@ -11,6 +11,8 @@ import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const signUpSchema = z.object({
   companyName: z.string().min(1, "Company name is required"),
@@ -37,7 +39,7 @@ export const SignUpForm = () => {
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       companyName: "",
-      country: "India",
+      country: "1",
       address1: "",
       address2: "",
       firstName: "",
@@ -48,8 +50,33 @@ export const SignUpForm = () => {
     },
   });
 
-  const onSubmit = (data: SignUpFormData) => {
-    console.log("Form submitted:", data);
+  const onSubmit = async (data: SignUpFormData) => {
+    const payload = {
+      address1: data.address1,
+      address2: data.address2,
+      companyName: data.companyName,
+      country: { id: data.country },
+      email: data.email,
+      firstName: data.firstName,
+      lastname: data.lastName,
+      mobileNumber: data.mobile,
+      phoneNumber: data.phone,
+    };
+    try {
+      const response = await axios.post(
+        "http://41.33.54.162:8085/halalcore/api/registration-requests",
+        payload
+      );
+      if (response.status === 201) {
+        toast.success("Account created");
+        navigate("/");
+      } else {
+        toast.error("something wrong ❌");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error("something wrong ❌");
+    }
   };
 
   const Label = ({ text, required }: { text: string; required?: boolean }) => (
@@ -102,9 +129,9 @@ export const SignUpForm = () => {
             render={({ field }) => (
               <FormControl fullWidth error={!!errors.country}>
                 <Select {...field}>
-                  <MenuItem value="India">India</MenuItem>
-                  <MenuItem value="Egypt">Egypt</MenuItem>
-                  <MenuItem value="USA">USA</MenuItem>
+                  <MenuItem value="1">India</MenuItem>
+                  <MenuItem value="2">Egypt</MenuItem>
+                  <MenuItem value="3">USA</MenuItem>
                 </Select>
                 {errors.country && (
                   <Typography color="error" variant="caption">

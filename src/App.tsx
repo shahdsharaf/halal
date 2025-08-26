@@ -9,6 +9,9 @@ import { AccrediationAndCertifications } from "./pages/AccrediationAndCertificta
 import { CertifiedProducts } from "./pages/CertifiedProducts/CertifiedProducts";
 import { SignIn } from "./pages/SignIn/SignIn";
 import { SignUp } from "./pages/SignUp/SignUp";
+import { Orders } from "./pages/Orders/Orders";
+import { Users } from "./pages/Users/Users";
+import ProtectedRoute from "./routes/ProtectedRoutes";
 import axios from "axios";
 import { useAppSelector } from "./app/hooks";
 import { useEffect } from "react";
@@ -28,6 +31,7 @@ function App() {
     <Router>
       <Layout>
         <Routes>
+          {/* Public routes */}
           <Route path="/" element={<Home />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact-us" element={<ContactUs />} />
@@ -39,9 +43,26 @@ function App() {
           <Route path="/certified-products" element={<CertifiedProducts />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
+
+          <Route
+            path="/orders"
+            element={
+              <ProtectedRoute>
+                <Orders />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/users"
+            element={
+              <ProtectedRoute>
+                <Users />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </Layout>
-      <ToastContainer position="top-right" autoClose={1500} />
+      <ToastContainer position="top-right" autoClose={1000} />
     </Router>
   );
 }

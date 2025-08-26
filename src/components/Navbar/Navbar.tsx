@@ -34,12 +34,12 @@ export const Navbar = () => {
   const { isAuthenticated, user } = useSelector(
     (state: RootState) => state.auth
   );
-  // const location = useLocation();
-  // const isTransparent = location.pathname === "/";
+
   const isTransparent = useSelector(
     (state: RootState) => state.navbar.isTransparent
   );
-  const navItems = [
+
+  const publicNavItems = [
     { label: "HOME", path: "/" },
     { label: "ABOUT US", path: "/about-us" },
     { label: "SERVICES", path: "/services" },
@@ -51,28 +51,36 @@ export const Navbar = () => {
     { label: "CONTACT US", path: "/contact-us" },
   ];
 
+  const userNavItems = [
+    { label: "ORDERS", path: "/orders" },
+    { label: "USERS", path: "/users" },
+  ];
+
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
   };
+
   const handleLogout = () => {
     dispatch(logout());
     navigate("/sign-in");
   };
+
+  const drawerItems = isAuthenticated ? userNavItems : publicNavItems;
+
   return (
     <>
       <AppBar
         position="static"
         className={`navbar ${isTransparent ? "transparent" : ""}`}
-        // className="navbar"
         elevation={0}
       >
-        {" "}
         <Toolbar
           sx={{
             display: "flex",
             flexDirection: isMobile ? "column" : "row",
             justifyContent: isMobile ? "center" : "space-between",
             alignItems: isMobile ? "center" : "flex-start",
+            gap: isMobile ? 2 : 0,
           }}
         >
           <Box display="flex" alignItems="center" gap={1} mb={isMobile ? 1 : 0}>
@@ -82,14 +90,17 @@ export const Navbar = () => {
           </Box>
 
           <Stack
-            direction={isMobile ? "row" : "column"}
-            spacing={isMobile ? 1 : 3}
+            direction="column"
+            spacing={isMobile ? 2 : 3}
+            alignItems={isMobile ? "center" : "flex-end"}
+            sx={{ flexGrow: 1, width: "100%" }}
           >
             <Stack
               direction="row"
               spacing={1}
               alignItems="center"
-              justifyContent="right"
+              justifyContent={isMobile ? "center" : "flex-end"}
+              sx={{ width: "100%" }}
             >
               {isAuthenticated ? (
                 <>
@@ -141,21 +152,24 @@ export const Navbar = () => {
                 </IconButton>
               )}
             </Stack>
+
             {!isMobile && (
-              <Stack direction="row" spacing={1}>
-                {navItems.map(({ label, path }, index) => {
-                  const isActive = window.location.pathname === path;
-                  return (
-                    <Button
-                      key={index}
-                      onClick={() => navigate(path)}
-                      className={`navItem ${isActive ? "active" : ""}`}
-                    >
-                      {label}
-                    </Button>
-                  );
-                })}
-              </Stack>
+              <Box>
+                {(isAuthenticated ? userNavItems : publicNavItems).map(
+                  ({ label, path }, index) => {
+                    const isActive = window.location.pathname === path;
+                    return (
+                      <Button
+                        key={index}
+                        onClick={() => navigate(path)}
+                        className={`navItem ${isActive ? "active" : ""}`}
+                      >
+                        {label}
+                      </Button>
+                    );
+                  }
+                )}
+              </Box>
             )}
           </Stack>
         </Toolbar>
@@ -166,11 +180,7 @@ export const Navbar = () => {
         open={drawerOpen}
         onClose={toggleDrawer(false)}
         PaperProps={{
-          sx: {
-            backgroundColor: "#242424",
-            color: "#ccc",
-            width: 350,
-          },
+          sx: { backgroundColor: "#242424", color: "#ccc", width: 300 },
         }}
       >
         <Box
@@ -180,19 +190,18 @@ export const Navbar = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-
             p: 2,
             gap: 2,
           }}
         >
-          <Box display="flex" alignItems="center" gap={1} mb={isMobile ? 1 : 0}>
+          <Box display="flex" alignItems="center" gap={1} mb={1}>
             <IconButton edge="start" color="inherit" sx={{ p: 0 }}>
               <img src={HalalLogo} alt="Logo" className="logo" />
             </IconButton>
           </Box>
 
           <List sx={{ width: "100%" }}>
-            {navItems.map(({ label, path }, index) => (
+            {drawerItems.map(({ label, path }, index) => (
               <ListItem key={index} disablePadding>
                 <ListItemButton onClick={() => navigate(path)}>
                   <ListItemText primary={label} />

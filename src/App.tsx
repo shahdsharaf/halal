@@ -31,7 +31,6 @@ function App() {
     <Router>
       <Layout>
         <Routes>
-          {/* Public routes */}
           <Route path="/" element={<Home />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact-us" element={<ContactUs />} />

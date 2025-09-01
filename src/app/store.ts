@@ -3,10 +3,12 @@ import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import authReducer from "../features/auth/authSlice";
 import navbarReducer from "../features/nav/navbarSlice";
+import ordersReducer from "../features/orders/ordersSlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
   navbar: navbarReducer,
+  ordersFilters: ordersReducer,
 });
 
 const persistConfig = {

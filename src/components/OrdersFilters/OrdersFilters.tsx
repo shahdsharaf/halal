@@ -12,11 +12,25 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+  setSearchOrderNo,
+  setStatusFilter,
+} from "../../features/orders/ordersSlice";
+import { statusMap } from "../../features/orders/statusMap";
+import { OrdersDateFilters } from "../OrderDateFilters/OrderDateFilters";
+interface OrdersFiltersProps {
+  totalCount: number;
+}
 
-export const OrdersFilters: React.FC = () => {
+export const OrdersFilters: React.FC<OrdersFiltersProps> = ({ totalCount }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  const dispatch = useAppDispatch();
+  const { searchOrderNo, status } = useAppSelector(
+    (state) => state.ordersFilters
+  );
 
   return (
     <Box
@@ -42,8 +56,8 @@ export const OrdersFilters: React.FC = () => {
             fontSize: 14,
           }}
         >
-          96 Orders
-        </Typography>{" "}
+          {totalCount} Orders
+        </Typography>
       </Box>
 
       <Box
@@ -56,6 +70,8 @@ export const OrdersFilters: React.FC = () => {
         <TextField
           placeholder="Halal Market Order No."
           size="small"
+          value={searchOrderNo}
+          onChange={(e) => dispatch(setSearchOrderNo(e.target.value))}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -66,28 +82,33 @@ export const OrdersFilters: React.FC = () => {
           fullWidth={isMobile}
         />
 
-        <Select defaultValue="" displayEmpty size="small" fullWidth={isMobile}>
-          <MenuItem value="">
+        <Select
+          value={status !== null ? String(status) : ""}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (val === "") {
+              dispatch(setStatusFilter(null));
+            } else {
+              dispatch(setStatusFilter(Number(val)));
+            }
+          }}
+          displayEmpty
+          size="small"
+          sx={{ minWidth: 160 }}
+          fullWidth={isMobile}
+        >
+          <MenuItem value="" disabled>
             <em>Filter by Status</em>
           </MenuItem>
-          <MenuItem value="pending">Pending</MenuItem>
-          <MenuItem value="processing">Processing</MenuItem>
-          <MenuItem value="completed">Completed</MenuItem>
+
+          {Object.entries(statusMap).map(([key, { label }]) => (
+            <MenuItem key={key} value={key}>
+              {label}
+            </MenuItem>
+          ))}
         </Select>
 
-        <TextField
-          placeholder="Search by Production Start Date"
-          size="small"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <CalendarTodayIcon fontSize="small" />
-              </InputAdornment>
-            ),
-          }}
-          fullWidth={isMobile}
-        />
-
+        <OrdersDateFilters />
         <Button
           variant="contained"
           color="error"

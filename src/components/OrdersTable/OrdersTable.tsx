@@ -1,4 +1,6 @@
-import React from "react";
+import { useEffect } from "react";
+import { useAppSelector, useAppDispatch } from "../../app/hooks";
+import { setPage } from "../../features/orders/ordersSlice";
 import {
   Box,
   Table,
@@ -8,7 +10,6 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Chip,
   IconButton,
   CircularProgress,
   Typography,
@@ -17,22 +18,31 @@ import {
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useOrders } from "../../features/orders/api";
 import type { Order } from "../../features/orders/types";
+import OrderStatusChip from "../../features/orders/OrdersStatusChip";
 
-const statusColor: Record<
-  Order["status"],
-  "success" | "info" | "warning" | "default" | "error"
-> = {
-  Active: "success", // green
-  New: "info", // blue
-  "Payment Settlement": "info", // blue
-  "Awaiting Document": "warning", // orange
-  "Ready for Shipment": "default", // grey
-  Completed: "default", // grey
-  "Under Review": "error", // red
-};
+interface OrdersTableProps {
+  onTotalCount: (count: number) => void;
+}
+export const OrdersTable: React.FC<OrdersTableProps> = ({ onTotalCount }) => {
+  const dispatch = useAppDispatch();
+  const { searchOrderNo, status, page, pageSize, dateFrom, dateTo } =
+    useAppSelector((state) => state.ordersFilters);
 
-export const OrdersTable: React.FC = () => {
-  const { data: orders, isLoading, isError } = useOrders();
+  const { data, isLoading, isError } = useOrders(
+    page - 1,
+    pageSize,
+    searchOrderNo,
+    status,
+    dateFrom,
+    dateTo
+  );
+
+  const totalCount = data?.totalCount ?? 0;
+  const orders: Order[] = data?.orders ?? [];
+
+  useEffect(() => {
+    onTotalCount(totalCount);
+  }, [totalCount, onTotalCount]);
 
   if (isLoading)
     return (
@@ -60,23 +70,19 @@ export const OrdersTable: React.FC = () => {
               <TableCell>Start Date</TableCell>
               <TableCell>End Date</TableCell>
               <TableCell>Status</TableCell>
+              <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders?.map((order) => (
+            {orders.map((order) => (
               <TableRow key={order.id}>
-                <TableCell>{order.halalOrderNo}</TableCell>
-                <TableCell>{order.importerCompany}</TableCell>
-                <TableCell>{order.requestedProducts}</TableCell>
+                <TableCell>{order.orderNo}</TableCell>
+                <TableCell>{order.destCompanyName}</TableCell>
+                <TableCell>{order.totalweight}</TableCell>
                 <TableCell>{order.startDate}</TableCell>
                 <TableCell>{order.endDate}</TableCell>
                 <TableCell>
-                  <Chip
-                    label={order.status}
-                    color={statusColor[order.status]}
-                    size="small"
-                    variant="outlined"
-                  />
+                  <OrderStatusChip status={order.status} />
                 </TableCell>
                 <TableCell align="right">
                   <IconButton>
@@ -90,7 +96,11 @@ export const OrdersTable: React.FC = () => {
       </TableContainer>
 
       <Box display="flex" justifyContent="center" my={2}>
-        <Pagination count={10} page={1} />
+        <Pagination
+          count={Math.ceil(totalCount / pageSize)}
+          page={page}
+          onChange={(_, value) => dispatch(setPage(value))}
+        />
       </Box>
     </Box>
   );

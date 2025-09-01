@@ -1,16 +1,9 @@
 export interface Order {
-  id: string;
-  halalOrderNo: string;
-  importerCompany: string;
-  requestedProducts: number;
+  id: number;
+  orderNo: string;
+  destCompanyName: string;
+  totalweight: number;
   startDate: string;
   endDate: string;
-  status:
-    | "Active"
-    | "New"
-    | "Payment Settlement"
-    | "Completed"
-    | "Awaiting Document"
-    | "Ready for Shipment"
-    | "Under Review";
+  status: number;
 }

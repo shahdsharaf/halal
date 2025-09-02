@@ -18,7 +18,9 @@ export const OrdersDateFilters = () => {
           label="Start Date"
           value={dateFrom ? dayjs(dateFrom) : null}
           onChange={(newValue: Dayjs | null) =>
-            dispatch(setDateFrom(newValue ? newValue.toISOString() : null))
+            dispatch(
+              setDateFrom(newValue ? newValue.format("YYYY-MM-DD") : null)
+            )
           }
           slotProps={{
             textField: { size: "small", fullWidth: isMobile },
@@ -29,7 +31,7 @@ export const OrdersDateFilters = () => {
           label="End Date"
           value={dateTo ? dayjs(dateTo) : null}
           onChange={(newValue: Dayjs | null) =>
-            dispatch(setDateTo(newValue ? newValue.toISOString() : null))
+            dispatch(setDateTo(newValue ? newValue.format("YYYY-MM-DD") : null))
           }
           slotProps={{
             textField: { size: "small", fullWidth: isMobile },

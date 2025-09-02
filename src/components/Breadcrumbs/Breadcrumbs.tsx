@@ -10,8 +10,6 @@ export const AppBreadcrumbs = () => {
 
   if (location.pathname === "/") return null;
 
-  const current = pathnames[pathnames.length - 1];
-
   return (
     <Breadcrumbs
       separator="/ "
@@ -26,9 +24,27 @@ export const AppBreadcrumbs = () => {
       >
         Home
       </Link>
-      <Typography color="inherit">
-        {capitalize(current.replace(/-/g, " "))}
-      </Typography>
+
+      {pathnames.map((value, index) => {
+        const to = `/${pathnames.slice(0, index + 1).join("/")}`;
+        const isLast = index === pathnames.length - 1;
+
+        return isLast ? (
+          <Typography key={to} color="inherit">
+            {capitalize(value.replace(/-/g, " "))}
+          </Typography>
+        ) : (
+          <Link
+            key={to}
+            underline="hover"
+            color="text.primary"
+            onClick={() => navigate(to)}
+            sx={{ cursor: "pointer" }}
+          >
+            {capitalize(value.replace(/-/g, " "))}
+          </Link>
+        );
+      })}
     </Breadcrumbs>
   );
 };

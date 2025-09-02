@@ -11,6 +11,7 @@ import { SignIn } from "./pages/SignIn/SignIn";
 import { SignUp } from "./pages/SignUp/SignUp";
 import { Orders } from "./pages/Orders/Orders";
 import { Users } from "./pages/Users/Users";
+import { CreateOrder } from "./pages/CreateOrder/CreateOrder";
 import ProtectedRoute from "./routes/ProtectedRoutes";
 import axios from "axios";
 import { useAppSelector } from "./app/hooks";
@@ -56,6 +57,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Users />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/orders/create-order"
+            element={
+              <ProtectedRoute>
+                <CreateOrder />
               </ProtectedRoute>
             }
           />

@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -26,7 +27,7 @@ interface OrdersFiltersProps {
 export const OrdersFilters: React.FC<OrdersFiltersProps> = ({ totalCount }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { searchOrderNo, status } = useAppSelector(
     (state) => state.ordersFilters
@@ -81,12 +82,11 @@ export const OrdersFilters: React.FC<OrdersFiltersProps> = ({ totalCount }) => {
           }}
           fullWidth={isMobile}
         />
-
         <Select
           value={status !== null ? String(status) : ""}
           onChange={(e) => {
             const val = e.target.value;
-            if (val === "") {
+            if (val === "all" || val === "") {
               dispatch(setStatusFilter(null));
             } else {
               dispatch(setStatusFilter(Number(val)));
@@ -100,7 +100,9 @@ export const OrdersFilters: React.FC<OrdersFiltersProps> = ({ totalCount }) => {
           <MenuItem value="" disabled>
             <em>Filter by Status</em>
           </MenuItem>
-
+          <MenuItem value="all">
+            <em>Select All</em>
+          </MenuItem>
           {Object.entries(statusMap).map(([key, { label }]) => (
             <MenuItem key={key} value={key}>
               {label}
@@ -114,6 +116,7 @@ export const OrdersFilters: React.FC<OrdersFiltersProps> = ({ totalCount }) => {
           color="error"
           startIcon={<AddIcon />}
           fullWidth={isMobile}
+          onClick={() => navigate("/orders/create-order")}
         >
           Create Order
         </Button>

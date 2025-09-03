@@ -1,9 +1,16 @@
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  useMediaQuery,
+  useTheme,
+  IconButton,
+  InputAdornment,
+} from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { setDateFrom, setDateTo } from "../../features/orders/ordersSlice";
+import ClearIcon from "@mui/icons-material/Clear";
 
 export const OrdersDateFilters = () => {
   const theme = useTheme();
@@ -23,7 +30,22 @@ export const OrdersDateFilters = () => {
             )
           }
           slotProps={{
-            textField: { size: "small", fullWidth: isMobile },
+            textField: {
+              size: "small",
+              fullWidth: isMobile,
+              InputProps: {
+                endAdornment: dateFrom ? (
+                  <InputAdornment position="end">
+                    <IconButton
+                      size="small"
+                      onClick={() => dispatch(setDateFrom(null))}
+                    >
+                      <ClearIcon fontSize="small" />
+                    </IconButton>
+                  </InputAdornment>
+                ) : null,
+              },
+            },
           }}
         />
 
@@ -34,7 +56,22 @@ export const OrdersDateFilters = () => {
             dispatch(setDateTo(newValue ? newValue.format("YYYY-MM-DD") : null))
           }
           slotProps={{
-            textField: { size: "small", fullWidth: isMobile },
+            textField: {
+              size: "small",
+              fullWidth: isMobile,
+              InputProps: {
+                endAdornment: dateTo ? (
+                  <InputAdornment position="end">
+                    <IconButton
+                      size="small"
+                      onClick={() => dispatch(setDateTo(null))}
+                    >
+                      <ClearIcon fontSize="small" />
+                    </IconButton>
+                  </InputAdornment>
+                ) : null,
+              },
+            },
           }}
         />
       </Box>

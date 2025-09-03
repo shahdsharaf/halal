@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -6,17 +6,23 @@ import {
   Typography,
   MenuItem,
   FormLabel,
+  InputAdornment,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import dayjs from "dayjs";
 import { grey } from "@mui/material/colors";
-import "./create-order-form.scss";
-
+import TonsIcon from "../../assets/img/tons-icon.svg";
+import "./order-form.scss";
+const countries = [
+  { id: "1", labelEn: "India", labelAr: "" },
+  { id: "2", labelEn: "Egypt", labelAr: "" },
+  { id: "3", labelEn: "UAE", labelAr: "" },
+];
 const orderSchema = z.object({
   govsPermitNo: z.string().nonempty("Egyptian GOVS Permit No is required"),
   productionStartDate: z.string().nonempty("Production Start Date is required"),
@@ -30,64 +36,121 @@ const orderSchema = z.object({
   companyName: z.string().nonempty("Company Name is required"),
   country: z.string().nonempty("Country is required"),
   contactName: z.string().nonempty("Contact Name is required"),
-  contactMobile: z.number().min(6, "Contact Mobile must be at least 6 digits"),
+  contactMobile: z.string().min(6, "Contact Mobile must be at least 6 digits"),
   contactEmail: z.string().email("Invalid email format"),
 });
 
 type OrderFormData = z.infer<typeof orderSchema>;
 
-export const CreateOrderForm: React.FC = () => {
+export const OrderForm: React.FC = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const today = dayjs().format("YYYY-MM-DD");
+  const [loading, setIsLoading] = useState(false);
+  const [order, setOrder] = useState<any>(null);
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<OrderFormData>({
     resolver: zodResolver(orderSchema),
+    defaultValues: {
+      productionStartDate: today,
+      productionEndDate: today,
+      govsPermitNo: "",
+      requestedWeight: 0,
+      productionDescription: "",
+      companyName: "",
+      country: "Egypt",
+      contactName: "",
+      contactEmail: "",
+      contactMobile: "",
+    },
   });
+
+  useEffect(() => {
+    if (!id) return;
+
+    setIsLoading(true);
+    axios
+      .get(`http://41.33.54.162:8085/halalcore/api/company-orders/search`, {
+        params: { orderId: id, page: 0, size: 1 },
+      })
+      .then((res) => {
+        const fetched = res.data[0];
+        setOrder(fetched);
+
+        reset({
+          govsPermitNo: fetched.govPermitNo,
+          productionStartDate: dayjs(fetched.startDate, "DD-MM-YYYY").format(
+            "YYYY-MM-DD"
+          ),
+          productionEndDate: dayjs(fetched.endDate, "DD-MM-YYYY").format(
+            "YYYY-MM-DD"
+          ),
+          requestedWeight: Number(fetched.totalweight),
+          productionDescription: fetched.orderDesc,
+          companyName: fetched.destCompanyName,
+          country: fetched.destCompanyCountry?.id?.toString(),
+          contactName: fetched.destContractName,
+          contactEmail: fetched.destContractEmail,
+          contactMobile: String(fetched.destContractMobile),
+        });
+
+        setIsLoading(false);
+      })
+      .catch(() => {
+        toast.error("Failed to fetch order details");
+        setIsLoading(false);
+      });
+  }, [id, reset]);
 
   const onSubmit = async (data: OrderFormData) => {
     try {
       const payload = {
+        ...(id && { id: Number(id) }),
         govPermitNo: data.govsPermitNo,
         startDate: dayjs(data.productionStartDate).format("DD-MM-YYYY"),
         endDate: dayjs(data.productionEndDate).format("DD-MM-YYYY"),
         totalweight: data.requestedWeight,
         orderDesc: data.productionDescription,
         destCompanyName: data.companyName,
-        destCompanyCountry: { id: 1 },
+        destCompanyCountry: { id: data.country },
         destContractName: data.contactName,
         destContractEmail: data.contactEmail,
-        destContractMobile: data.contactMobile,
-        status: 1,
+        destContractMobile: String(data.contactMobile),
+        ...(id ? {} : { status: 1 }),
       };
 
-      await axios.post(
-        "http://41.33.54.162:8085/halalcore/api/company-orders",
-        payload
-      );
+      if (id) {
+        await axios.post(
+          "http://41.33.54.162:8085/halalcore/api/company-orders/update",
+          payload
+        );
+        toast.success("Order updated successfully!");
+      } else {
+        await axios.post(
+          "http://41.33.54.162:8085/halalcore/api/company-orders",
+          payload
+        );
+        toast.success("Order created successfully!");
+      }
 
-      toast.success("Order created successfully!");
       navigate("/orders");
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        toast.error(
-          error.response?.data?.message ||
-            error.message ||
-            "Failed to create order"
-        );
+        toast.error(error.response?.data?.message || error.message);
       } else if (error instanceof Error) {
         toast.error(error.message);
       } else {
-        toast.error("Something went wrong while creating order");
+        toast.error("Something went wrong");
       }
     }
   };
 
-  const handleCancel = () => {
-    navigate("/orders");
-  };
+  const handleCancel = () => navigate("/orders");
 
   return (
     <Box
@@ -95,27 +158,30 @@ export const CreateOrderForm: React.FC = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="create-order-form"
     >
-      <Typography
-        variant="h4"
-        fontWeight="bold"
-        gutterBottom
-        marginBottom="30px"
-      >
-        Create New Order
+      <Typography variant="h4" fontWeight="bold" gutterBottom mb="30px">
+        {id ? "Edit Order" : "Create New Order"}
       </Typography>
 
-      <div className="form-group">
-        <FormLabel>
-          Egyptian GOVS Permit No <span className="required">*</span>
-        </FormLabel>
+      <div className="form-row">
         <div className="form-group govs-permit">
+          <FormLabel>
+            Egyptian GOVS Permit No <span className="required">*</span>
+          </FormLabel>
           <TextField
-            {...register("govsPermitNo")}
             error={!!errors.govsPermitNo}
             helperText={errors.govsPermitNo?.message}
             fullWidth
+            disabled={!!id}
+            {...register("govsPermitNo")}
           />
         </div>
+
+        {id && (
+          <div className="form-group">
+            <FormLabel>Halal Market Order No.</FormLabel>
+            <TextField value={order?.orderNo || ""} fullWidth disabled />
+          </div>
+        )}
       </div>
 
       <div className="form-row">
@@ -126,7 +192,6 @@ export const CreateOrderForm: React.FC = () => {
           <TextField
             fullWidth
             type="date"
-            InputLabelProps={{ shrink: true }}
             {...register("productionStartDate")}
             error={!!errors.productionStartDate}
             helperText={errors.productionStartDate?.message}
@@ -139,7 +204,6 @@ export const CreateOrderForm: React.FC = () => {
           <TextField
             fullWidth
             type="date"
-            InputLabelProps={{ shrink: true }}
             {...register("productionEndDate")}
             error={!!errors.productionEndDate}
             helperText={errors.productionEndDate?.message}
@@ -150,8 +214,7 @@ export const CreateOrderForm: React.FC = () => {
       <div className="form-row">
         <div className="form-group">
           <FormLabel>
-            Requested Weight for Production (Tons){" "}
-            <span className="required">*</span>
+            Requested Weight for Production <span className="required">*</span>
           </FormLabel>
           <TextField
             fullWidth
@@ -159,6 +222,18 @@ export const CreateOrderForm: React.FC = () => {
             {...register("requestedWeight", { valueAsNumber: true })}
             error={!!errors.requestedWeight}
             helperText={errors.requestedWeight?.message}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <span style={{ marginLeft: 4 }}>Tons</span>
+                  <img
+                    src={TonsIcon}
+                    alt="tons icon"
+                    style={{ width: 18, height: 18, marginLeft: 4 }}
+                  />
+                </InputAdornment>
+              ),
+            }}
           />
         </div>
         <div className="form-group">
@@ -176,12 +251,7 @@ export const CreateOrderForm: React.FC = () => {
         </div>
       </div>
 
-      <Typography
-        variant="h5"
-        fontWeight="bold"
-        gutterBottom
-        marginBottom="25px"
-      >
+      <Typography variant="h5" fontWeight="bold" gutterBottom mb="25px">
         Importer Company Details
       </Typography>
       <div className="form-row">
@@ -207,19 +277,16 @@ export const CreateOrderForm: React.FC = () => {
             error={!!errors.country}
             helperText={errors.country?.message}
           >
-            <MenuItem value="Egypt">Egypt</MenuItem>
-            <MenuItem value="Saudi Arabia">Saudi Arabia</MenuItem>
-            <MenuItem value="UAE">UAE</MenuItem>
+            {countries.map((item, index) => (
+              <MenuItem key={index} value={item.id}>
+                {item.labelEn}
+              </MenuItem>
+            ))}
           </TextField>
         </div>
       </div>
 
-      <Typography
-        variant="h5"
-        fontWeight="bold"
-        gutterBottom
-        marginBottom="25px"
-      >
+      <Typography variant="h5" fontWeight="bold" gutterBottom mb="25px">
         Importer Contact Information
       </Typography>
       <div className="form-row">
@@ -240,30 +307,28 @@ export const CreateOrderForm: React.FC = () => {
           </FormLabel>
           <TextField
             fullWidth
-            {...register("contactMobile", { valueAsNumber: true })}
+            {...register("contactMobile")}
             error={!!errors.contactMobile}
             helperText={errors.contactMobile?.message}
           />
         </div>
       </div>
 
-      <div className="form-group">
+      <div className="form-group contact-email">
         <FormLabel>
           Contact Email <span className="required">*</span>
         </FormLabel>
-        <div className="form-group contact-email">
-          <TextField
-            fullWidth
-            {...register("contactEmail")}
-            error={!!errors.contactEmail}
-            helperText={errors.contactEmail?.message}
-          />
-        </div>
+        <TextField
+          fullWidth
+          {...register("contactEmail")}
+          error={!!errors.contactEmail}
+          helperText={errors.contactEmail?.message}
+        />
       </div>
 
       <div className="form-actions">
         <Button type="submit" variant="contained" color="error">
-          Add
+          {id ? "Edit" : "Add"}
         </Button>
         <Button
           variant="outlined"
@@ -271,10 +336,7 @@ export const CreateOrderForm: React.FC = () => {
           sx={{
             color: grey[500],
             borderColor: grey[500],
-            "&:hover": {
-              borderColor: grey[700],
-              color: grey[700],
-            },
+            "&:hover": { borderColor: grey[700], color: grey[700] },
           }}
         >
           Cancel
@@ -283,3 +345,5 @@ export const CreateOrderForm: React.FC = () => {
     </Box>
   );
 };
+
+export default OrderForm;

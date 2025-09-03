@@ -29,6 +29,9 @@ export const AppBreadcrumbs = () => {
         const to = `/${pathnames.slice(0, index + 1).join("/")}`;
         const isLast = index === pathnames.length - 1;
 
+        const isId = /^\d+$/.test(value);
+        if (isId) return null;
+
         return isLast ? (
           <Typography key={to} color="inherit">
             {capitalize(value.replace(/-/g, " "))}

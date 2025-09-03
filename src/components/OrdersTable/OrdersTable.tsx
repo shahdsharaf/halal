@@ -1,6 +1,4 @@
-import { useEffect } from "react";
-import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { setPage } from "../../features/orders/ordersSlice";
+import { useState, useEffect } from "react";
 import {
   Box,
   Table,
@@ -14,10 +12,15 @@ import {
   CircularProgress,
   Typography,
   Pagination,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useNavigate } from "react-router-dom";
 import { useOrders } from "../../features/orders/api";
 import type { Order } from "../../features/orders/types";
+import { useAppSelector, useAppDispatch } from "../../app/hooks";
+import { setPage } from "../../features/orders/ordersSlice";
 import OrderStatusChip from "../../features/orders/OrdersStatusChip";
 
 interface OrdersTableProps {
@@ -25,6 +28,7 @@ interface OrdersTableProps {
 }
 export const OrdersTable: React.FC<OrdersTableProps> = ({ onTotalCount }) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { searchOrderNo, status, page, pageSize, dateFrom, dateTo } =
     useAppSelector((state) => state.ordersFilters);
 
@@ -39,6 +43,37 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({ onTotalCount }) => {
 
   const totalCount = data?.totalCount ?? 0;
   const orders: Order[] = data?.orders ?? [];
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+
+  const handleMenuOpen = (
+    event: React.MouseEvent<HTMLElement>,
+    order: Order
+  ) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedOrder(order);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setSelectedOrder(null);
+  };
+
+  const handleView = () => {
+    if (selectedOrder) navigate(`/orders/${selectedOrder.id}/view-order`);
+    handleMenuClose();
+  };
+
+  const handleEdit = () => {
+    if (selectedOrder) navigate(`/orders/${selectedOrder.id}/edit-order`);
+    handleMenuClose();
+  };
+
+  const handleTimeline = () => {
+    if (selectedOrder) navigate(`/orders/${selectedOrder.id}/order-timeline`);
+    handleMenuClose();
+  };
 
   useEffect(() => {
     onTotalCount(totalCount);
@@ -85,7 +120,7 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({ onTotalCount }) => {
                   <OrderStatusChip status={order.status} />
                 </TableCell>
                 <TableCell align="right">
-                  <IconButton>
+                  <IconButton onClick={(e) => handleMenuOpen(e, order)}>
                     <MoreVertIcon />
                   </IconButton>
                 </TableCell>
@@ -94,6 +129,16 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({ onTotalCount }) => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+      >
+        <MenuItem onClick={handleView}>View</MenuItem>
+        <MenuItem onClick={handleEdit}>Edit</MenuItem>
+        <MenuItem onClick={handleTimeline}>Order Timeline</MenuItem>
+      </Menu>
 
       <Box display="flex" justifyContent="center" my={2}>
         <Pagination

@@ -12,11 +12,13 @@ import { SignUp } from "./pages/SignUp/SignUp";
 import { Orders } from "./pages/Orders/Orders";
 import { Users } from "./pages/Users/Users";
 import { CreateOrder } from "./pages/CreateOrder/CreateOrder";
+import { EditOrder } from "./pages/EditOrder/EditOrder";
 import ProtectedRoute from "./routes/ProtectedRoutes";
 import axios from "axios";
 import { useAppSelector } from "./app/hooks";
 import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
@@ -65,6 +67,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <CreateOrder />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/orders/:id/edit-order"
+            element={
+              <ProtectedRoute>
+                <EditOrder />{" "}
               </ProtectedRoute>
             }
           />

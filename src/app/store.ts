@@ -4,8 +4,10 @@ import { persistReducer, persistStore } from "redux-persist";
 import authReducer from "../features/auth/authSlice";
 import navbarReducer from "../features/nav/navbarSlice";
 import ordersReducer from "../features/orders/ordersSlice";
+import settingsReducer from "./slices/settingsSlice";
 
 const rootReducer = combineReducers({
+  settings: settingsReducer,
   auth: authReducer,
   navbar: navbarReducer,
   ordersFilters: ordersReducer,
@@ -14,7 +16,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth"],
+  whitelist: ["auth", "settings"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

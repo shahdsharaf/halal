@@ -16,17 +16,20 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import { LockOutlined, DensityMedium } from "@mui/icons-material";
+import { LockOutlined, DensityMedium, Label } from "@mui/icons-material";
 import HalalLogo from "../../assets/img/halal-logo.svg";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import type { RootState } from "../../app/store";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../features/auth/authSlice";
+import { useTranslation } from "react-i18next";
+import { setLang, setDir } from "../../app/slices/settingsSlice";
 import "./navbar.scss";
 
 export const Navbar = () => {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -34,13 +37,25 @@ export const Navbar = () => {
   const { isAuthenticated, user } = useSelector(
     (state: RootState) => state.auth
   );
-
+  const langs = [
+    { Label: "🇬🇧 English", value: "en", dir: "ltr" },
+    { Label: "🇸🇦 Arabic", value: "ar", dir: "rtl" },
+  ];
   const isTransparent = useSelector(
     (state: RootState) => state.navbar.isTransparent
   );
+  const { lang } = useSelector((state: RootState) => state.settings);
+  const handleLangClick = (value, dir) => {
+    i18n.changeLanguage(value);
 
+    dispatch(setLang(value));
+    dispatch(setDir(dir));
+    document.documentElement.dir = dir;
+    document.documentElement.lang = value;
+    i18n.changeLanguage(value);
+  };
   const publicNavItems = [
-    { label: "HOME", path: "/" },
+    { label: t("home", { ns: "navbar" }), path: "/" },
     { label: "ABOUT US", path: "/about-us" },
     { label: "SERVICES", path: "/services" },
     { label: "CERTIFIED PRODUCTS", path: "/certified-products" },
@@ -122,7 +137,7 @@ export const Navbar = () => {
                   startIcon={<LockOutlined />}
                   className="signInBtn"
                 >
-                  Sign in
+                  {t("signIn", { ns: "general" })}
                 </Button>
               )}
 
@@ -134,12 +149,20 @@ export const Navbar = () => {
 
               <Select
                 variant="outlined"
-                value="en"
                 size="small"
+                value={lang}
                 className="languageSelect"
               >
-                <LangMenuItem value="en">🇬🇧 English</LangMenuItem>
-                <LangMenuItem value="ar">🇸🇦 Arabic</LangMenuItem>
+                {/* <LangMenuItem value="en">🇬🇧 English</LangMenuItem>
+                <LangMenuItem value="ar">🇸🇦 Arabic</LangMenuItem> */}
+                {langs.map((item) => (
+                  <LangMenuItem
+                    value={item.value}
+                    onClick={() => handleLangClick(item.value, item.dir)}
+                  >
+                    {item.Label}
+                  </LangMenuItem>
+                ))}
               </Select>
 
               {isMobile && (

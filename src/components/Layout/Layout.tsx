@@ -1,11 +1,13 @@
 import { Navbar } from "../Navbar/Navbar";
 import { AppBreadcrumbs } from "../Breadcrumbs/Breadcrumbs";
+import { useTranslation } from "react-i18next";
 import "./layout.scss";
 type LayoutProps = {
   children: React.ReactNode;
 };
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const { t } = useTranslation(["general"]);
   return (
     <>
       <Navbar />
@@ -14,7 +16,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         {children}
       </div>
       <footer className="footer">
-        <p className="footer__body">© 2025 Halal Market All Rights Reserved</p>
+        <p className="footer__body"> {t("footer", { ns: "general" })}</p>
       </footer>
     </>
   );

@@ -16,7 +16,7 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import { LockOutlined, DensityMedium, Label } from "@mui/icons-material";
+import { LockOutlined, DensityMedium } from "@mui/icons-material";
 import HalalLogo from "../../assets/img/halal-logo.svg";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -29,7 +29,7 @@ import "./navbar.scss";
 
 export const Navbar = () => {
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation(["general", "navbar"]);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -38,14 +38,14 @@ export const Navbar = () => {
     (state: RootState) => state.auth
   );
   const langs = [
-    { Label: "🇬🇧 English", value: "en", dir: "ltr" },
-    { Label: "🇸🇦 Arabic", value: "ar", dir: "rtl" },
+    { Label: t("english", { ns: "general" }), value: "en", dir: "ltr" },
+    { Label: t("arabic", { ns: "general" }), value: "ar", dir: "rtl" },
   ];
   const isTransparent = useSelector(
     (state: RootState) => state.navbar.isTransparent
   );
   const { lang } = useSelector((state: RootState) => state.settings);
-  const handleLangClick = (value, dir) => {
+  const handleLangClick = (value: string, dir: string) => {
     i18n.changeLanguage(value);
 
     dispatch(setLang(value));
@@ -56,19 +56,22 @@ export const Navbar = () => {
   };
   const publicNavItems = [
     { label: t("home", { ns: "navbar" }), path: "/" },
-    { label: "ABOUT US", path: "/about-us" },
-    { label: "SERVICES", path: "/services" },
-    { label: "CERTIFIED PRODUCTS", path: "/certified-products" },
+    { label: t("aboutUs", { ns: "navbar" }), path: "/about-us" },
+    { label: t("services", { ns: "navbar" }), path: "/services" },
     {
-      label: "ACCREDITATION & CERTIFICATIONS",
+      label: t("certifiedProducts", { ns: "navbar" }),
+      path: "/certified-products",
+    },
+    {
+      label: t("accreditationAndCertifications", { ns: "navbar" }),
       path: "/accrediation-and-certifications",
     },
-    { label: "CONTACT US", path: "/contact-us" },
+    { label: t("contactUs", { ns: "navbar" }), path: "/contact-us" },
   ];
 
   const userNavItems = [
-    { label: "ORDERS", path: "/orders" },
-    { label: "USERS", path: "/users" },
+    { label: t("orders", { ns: "navbar" }), path: "/orders" },
+    { label: t("users", { ns: "navbar" }), path: "/users" },
   ];
 
   const toggleDrawer = (open: boolean) => () => {
@@ -125,7 +128,7 @@ export const Navbar = () => {
                     className="logoutBtn"
                     sx={{ fontSize: "0.85rem", color: "#ccc" }}
                   >
-                    Logout
+                    {t("logout", { ns: "general" })}
                   </Button>
                   <Typography sx={{ fontSize: "0.9rem", color: "#fff" }}>
                     {user?.login}
@@ -143,7 +146,7 @@ export const Navbar = () => {
 
               {!isMobile && (
                 <Typography sx={{ fontSize: "0.85rem", color: "#ccc" }}>
-                  Change Language
+                  {t("changeLang", { ns: "general" })}
                 </Typography>
               )}
 

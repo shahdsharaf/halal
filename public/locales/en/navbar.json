@@ -1,4 +1,10 @@
 {
   "home": "Home",
-  "aboutUs": "About Us"
+  "aboutUs": "About Us",
+  "services": "Services",
+  "certifiedProducts": "Certified Products",
+  "accreditationAndCertifications": "Accreditation and Certifications",
+  "contactUs": "Contact Us",
+  "orders": "orders",
+  "users": "users"
 }

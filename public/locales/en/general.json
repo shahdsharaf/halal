@@ -1,3 +1,8 @@
 {
-  "signIn": "Sign In"
+  "signIn": "Sign In",
+  "logout": "logout",
+  "changeLang": "Change Language",
+  "english": "🇬🇧 English",
+  "arabic": "🇸🇦 Arabic",
+  "footer": "© 2025 Halal Market All Rights Reserved"
 }

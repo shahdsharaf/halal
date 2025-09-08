@@ -1,0 +1,25 @@
+{
+  "contactUs": "Contact us",
+  "needHelp": "Need Help?",
+  "helpDesc": "If you have any question or inquiry please don't hesitate to send the inquiry message, and we reply to you as soon as.",
+
+  "egyptBranch": "Egypt Branch",
+  "indiaBranch": "India Branch",
+
+  "email": "Email",
+  "phone": "Phone",
+  "address": "Address",
+
+  "indiaAddress": "Office no# - A 1104, Advant IT, Business park, Noida sector 142, Uttar Pradesh, India",
+
+  "formTitle": "Any question or remarks? Just write us a message!",
+  "firstName": "First name",
+  "lastName": "Last name",
+  "emailField": "Email",
+  "phoneNumber": "Phone Number",
+  "country": "Country of Origin",
+  "subject": "Subject",
+  "message": "Your Message",
+  "maxLetters": "Maximum letter 3000 for your message",
+  "sendBtn": "Send"
+}

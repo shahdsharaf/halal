@@ -1,0 +1,20 @@
+{
+  "signUp": "Sign Up",
+  "signUpDescription": "Please fill out the form below to apply for registration, to be able to use IS EG Halal services",
+  "companyInfo": "Company Info",
+  "companyName": "Company Name",
+  "countryOfOrigin": "Country of Origin",
+  "india": "India",
+  "egypt": "Egypt",
+  "USA": "USA",
+  "address1": "Address 1",
+  "address2": "Address 2",
+  "contactInfo": "Contact Info",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "phoneNumber": "Phone Number",
+  "mobileNumber": "Mobile Number",
+  "email": "Email",
+  "saveContinue": "Save & Continue",
+  "cancel": "Cancel"
+}

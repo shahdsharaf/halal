@@ -1,0 +1,9 @@
+{
+  "welcome": "Welcome",
+  "wbEnterDetails": "Welcome back, please enter your details",
+  "username": "Username",
+  "password": "Password",
+  "signInBtn": "Sign in",
+  "dontHaveAcc": "Don't have an account?",
+  "signUp": "Sign up"
+}

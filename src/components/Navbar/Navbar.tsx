@@ -19,7 +19,7 @@ import {
 import { LockOutlined, DensityMedium } from "@mui/icons-material";
 import HalalLogo from "../../assets/img/halal-logo.svg";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { RootState } from "../../app/store";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../features/auth/authSlice";
@@ -44,7 +44,7 @@ export const Navbar = () => {
   const isTransparent = useSelector(
     (state: RootState) => state.navbar.isTransparent
   );
-  const { lang } = useSelector((state: RootState) => state.settings);
+  const { lang, dir } = useSelector((state: RootState) => state.settings);
   const handleLangClick = (value: string, dir: string) => {
     i18n.changeLanguage(value);
 
@@ -54,6 +54,12 @@ export const Navbar = () => {
     document.documentElement.lang = value;
     i18n.changeLanguage(value);
   };
+  useEffect(() => {
+    document.documentElement.dir = dir;
+    document.documentElement.lang = lang;
+    i18n.changeLanguage(lang);
+  }, [lang, dir]);
+
   const publicNavItems = [
     { label: t("home", { ns: "navbar" }), path: "/" },
     { label: t("aboutUs", { ns: "navbar" }), path: "/about-us" },

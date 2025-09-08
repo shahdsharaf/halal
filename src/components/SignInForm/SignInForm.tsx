@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import "./sign-in-form.scss";
 import { toast } from "react-toastify";
 import { FormLabel } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 
 interface SignInFormInputs {
@@ -19,6 +20,7 @@ const SignInForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const handleNavToSignup = () => navigate("/sign-up");
+  const { t } = useTranslation(["signIn"]);
 
   const {
     register,
@@ -64,10 +66,10 @@ const SignInForm: React.FC = () => {
       sx={{ display: "flex", flexDirection: "column", gap: 2 }}
     >
       <Typography variant="h4" fontWeight="bold">
-        Welcome
+        {t("welcome", { ns: "signIn" })}
       </Typography>
       <Typography variant="h6" color="#aaa">
-        Welcome back, please enter your details
+        {t("wbEnterDetails", { ns: "signIn" })}
       </Typography>
 
       <>
@@ -81,7 +83,7 @@ const SignInForm: React.FC = () => {
             },
           }}
         >
-          Username
+          {t("username", { ns: "signIn" })}
         </FormLabel>
         <TextField
           label="Username"
@@ -101,7 +103,7 @@ const SignInForm: React.FC = () => {
             },
           }}
         >
-          Password
+          {t("password", { ns: "signIn" })}
         </FormLabel>
         <TextField
           type="password"
@@ -119,10 +121,10 @@ const SignInForm: React.FC = () => {
           color="error"
           sx={{ marginTop: "15px" }}
         >
-          Sign In
+          {t("signInBtn", { ns: "signIn" })}
         </Button>
         <Typography className="sign-up" fontWeight="bold">
-          Don't have an account?{" "}
+          {t("dontHaveAcc", { ns: "signIn" })}
           <Button
             sx={{
               padding: "0",
@@ -132,7 +134,7 @@ const SignInForm: React.FC = () => {
             }}
             onClick={handleNavToSignup}
           >
-            Sign up
+            {t("signUp", { ns: "signIn" })}
           </Button>
         </Typography>
       </>

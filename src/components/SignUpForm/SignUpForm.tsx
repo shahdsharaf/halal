@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const signUpSchema = z.object({
   companyName: z.string().min(1, "Company name is required"),
@@ -85,19 +86,19 @@ export const SignUpForm = () => {
       {required && <span style={{ color: "red" }}>*</span>}
     </Typography>
   );
+  const { t } = useTranslation(["signUp"]);
 
   return (
     <Box m={6} mt={4}>
       <Typography variant="h4" fontWeight="bold" gutterBottom>
-        Sign up
+        {t("signUp", { ns: "signUp" })}{" "}
       </Typography>
       <Typography variant="body1" mb={4}>
-        Please fill out the form below to apply for registration, to be able to
-        use IS EG Halal services
+        {t("signUpDescription", { ns: "signUp" })}
       </Typography>
 
       <Typography variant="h6" fontWeight="bold" mb={2}>
-        Company Info
+        {t("companyInfo", { ns: "signUp" })}{" "}
       </Typography>
       <Box
         display="grid"
@@ -106,7 +107,7 @@ export const SignUpForm = () => {
         mb={4}
       >
         <Box>
-          <Label text="Company Name" required />
+          <Label text={t("companyName", { ns: "signUp" })} required />
           <Controller
             name="companyName"
             control={control}
@@ -122,16 +123,16 @@ export const SignUpForm = () => {
         </Box>
 
         <Box>
-          <Label text="Country of Origin" required />
+          <Label text={t("countryOfOrigin", { ns: "signUp" })} required />
           <Controller
             name="country"
             control={control}
             render={({ field }) => (
               <FormControl fullWidth error={!!errors.country}>
                 <Select {...field}>
-                  <MenuItem value="1">India</MenuItem>
-                  <MenuItem value="2">Egypt</MenuItem>
-                  <MenuItem value="3">USA</MenuItem>
+                  <MenuItem value="1">{t("india", { ns: "signUp" })}</MenuItem>
+                  <MenuItem value="2">{t("egypt", { ns: "signUp" })}</MenuItem>
+                  <MenuItem value="3">{t("USA", { ns: "signUp" })}</MenuItem>
                 </Select>
                 {errors.country && (
                   <Typography color="error" variant="caption">
@@ -144,7 +145,7 @@ export const SignUpForm = () => {
         </Box>
 
         <Box>
-          <Label text="Address 1" required />
+          <Label text={t("address1", { ns: "signUp" })} required />
           <Controller
             name="address1"
             control={control}
@@ -160,7 +161,7 @@ export const SignUpForm = () => {
         </Box>
 
         <Box>
-          <Label text="Address 2" />
+          <Label text={t("address2", { ns: "signUp" })} />
           <Controller
             name="address2"
             control={control}
@@ -177,7 +178,7 @@ export const SignUpForm = () => {
       </Box>
 
       <Typography variant="h6" fontWeight="bold" mb={2}>
-        Contact Info
+        {t("contactInfo", { ns: "signUp" })}{" "}
       </Typography>
       <Box
         display="grid"
@@ -186,7 +187,7 @@ export const SignUpForm = () => {
         mb={4}
       >
         <Box>
-          <Label text="First Name" required />
+          <Label text={t("firstName", { ns: "signUp" })} required />
           <Controller
             name="firstName"
             control={control}
@@ -202,7 +203,7 @@ export const SignUpForm = () => {
         </Box>
 
         <Box>
-          <Label text="Last Name" required />
+          <Label text={t("lastName", { ns: "signUp" })} required />
           <Controller
             name="lastName"
             control={control}
@@ -218,7 +219,7 @@ export const SignUpForm = () => {
         </Box>
 
         <Box>
-          <Label text="Phone Number" required />
+          <Label text={t("phoneNumber", { ns: "signUp" })} required />
           <Controller
             name="phone"
             control={control}
@@ -235,7 +236,7 @@ export const SignUpForm = () => {
         </Box>
 
         <Box>
-          <Label text="Mobile Number" required />
+          <Label text={t("mobileNumber", { ns: "signUp" })} required />
           <Controller
             name="mobile"
             control={control}
@@ -252,7 +253,7 @@ export const SignUpForm = () => {
         </Box>
 
         <Box gridColumn={{ sm: "1", m: "1 / span 2" }}>
-          <Label text="Email" required />
+          <Label text={t("email", { ns: "signUp" })} required />
           <Controller
             name="email"
             control={control}
@@ -283,7 +284,7 @@ export const SignUpForm = () => {
             color="error"
             onClick={handleSubmit(onSubmit)}
           >
-            Save & Continue
+            {t("saveContinue", { ns: "signUp" })}{" "}
           </Button>
           <Button
             sx={{
@@ -298,7 +299,7 @@ export const SignUpForm = () => {
             variant="outlined"
             onClick={() => navigate("/sign-in")}
           >
-            Cancel
+            {t("cancel", { ns: "signUp" })}{" "}
           </Button>
         </Box>
       </Box>

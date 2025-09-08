@@ -11,6 +11,7 @@ import {
   Typography,
   FormLabel,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 type FormInputs = {
   firstName: string;
@@ -23,6 +24,8 @@ type FormInputs = {
 };
 
 export default function ContactUsForm() {
+  const { t } = useTranslation(["contactUs"]);
+
   const {
     handleSubmit,
     control,
@@ -45,7 +48,7 @@ export default function ContactUsForm() {
       }}
     >
       <Typography variant="h6" mb={2} fontWeight="600">
-        Any question or remarks? Just write us a message!
+        {t("formTitle", { ns: "contactUs" })}
       </Typography>
 
       <Controller
@@ -62,7 +65,7 @@ export default function ContactUsForm() {
                 "& .MuiFormLabel-asterisk": { color: "red" },
               }}
             >
-              First name
+              {t("firstName", { ns: "contactUs" })}
             </FormLabel>
             <TextField
               {...field}
@@ -89,7 +92,7 @@ export default function ContactUsForm() {
                 "& .MuiFormLabel-asterisk": { color: "red" },
               }}
             >
-              Last name
+              {t("lastName", { ns: "contactUs" })}
             </FormLabel>
             <TextField
               {...field}
@@ -122,7 +125,7 @@ export default function ContactUsForm() {
                 "& .MuiFormLabel-asterisk": { color: "red" },
               }}
             >
-              Email
+              {t("email", { ns: "contactUs" })}
             </FormLabel>
             <TextField
               {...field}
@@ -150,7 +153,7 @@ export default function ContactUsForm() {
                 "& .MuiFormLabel-asterisk": { color: "red" },
               }}
             >
-              Phone Number
+              {t("phoneNumber", { ns: "contactUs" })}
             </FormLabel>
             <TextField
               {...field}
@@ -177,7 +180,7 @@ export default function ContactUsForm() {
                 "& .MuiFormLabel-asterisk": { color: "red" },
               }}
             >
-              Country of Origin
+              {t("country", { ns: "contactUs" })}
             </FormLabel>
             <Select {...field} displayEmpty>
               <MenuItem value="">Select Country</MenuItem>
@@ -206,7 +209,7 @@ export default function ContactUsForm() {
                 "& .MuiFormLabel-asterisk": { color: "red" },
               }}
             >
-              Subject
+              {t("subject", { ns: "contactUs" })}
             </FormLabel>
             <Select {...field} displayEmpty>
               <MenuItem value="">Choose your subject</MenuItem>
@@ -225,7 +228,10 @@ export default function ContactUsForm() {
         control={control}
         rules={{
           required: "Message is required",
-          maxLength: { value: 3000, message: "Maximum 3000 characters" },
+          maxLength: {
+            value: 3000,
+            message: t("maxLetters", { ns: "contactUs" }),
+          },
         }}
         render={({ field }) => (
           <>
@@ -237,7 +243,7 @@ export default function ContactUsForm() {
                 "& .MuiFormLabel-asterisk": { color: "red" },
               }}
             >
-              Your Message
+              {t("message", { ns: "contactUs" })}{" "}
             </FormLabel>
             <TextField
               {...field}
@@ -247,8 +253,7 @@ export default function ContactUsForm() {
               rows={4}
               error={!!errors.message}
               helperText={
-                errors.message?.message ||
-                "Maximum letter 3000 for your message"
+                errors.message?.message || t("maxLetters", { ns: "contactUs" })
               }
             />
           </>
@@ -269,7 +274,7 @@ export default function ContactUsForm() {
           borderRadius: 3,
         }}
       >
-        Send
+        {t("sendBtn", { ns: "contactUs" })}
       </Button>
     </Box>
   );

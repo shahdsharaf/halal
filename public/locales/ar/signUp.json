@@ -1,0 +1,20 @@
+{
+  "signUp": "إنشاء حساب",
+  "signUpDescription": "يرجى ملء النموذج أدناه للتقدم للتسجيل، حتى تتمكن من استخدام خدمات IS EG Halal",
+  "companyInfo": "معلومات الشركة",
+  "companyName": "اسم الشركة",
+  "countryOfOrigin": "بلد المنشأ",
+  "india": "الهند",
+  "egypt": "مصر",
+  "USA": "الولايات المتحدة",
+  "address1": "العنوان 1",
+  "address2": "العنوان 2",
+  "contactInfo": "معلومات التواصل",
+  "firstName": "الاسم الأول",
+  "lastName": "اسم العائلة",
+  "phoneNumber": "رقم الهاتف",
+  "mobileNumber": "رقم الجوال",
+  "email": "البريد الإلكتروني",
+  "saveContinue": "حفظ ومتابعة",
+  "cancel": "إلغاء"
+}

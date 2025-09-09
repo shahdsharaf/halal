@@ -1,13 +1,11 @@
 import React from "react";
-import { useForm } from "react-hook-form";
-import { Button, TextField, Box, Typography } from "@mui/material";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { Button, TextField, Box, Typography, FormLabel } from "@mui/material";
 import { useAppDispatch } from "../../app/hooks";
-import { setUser, login } from "../../features/auth/authSlice";
-import type { SubmitHandler } from "react-hook-form";
+import { setUser, login, setRole } from "../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import "./sign-in-form.scss";
 import { toast } from "react-toastify";
-import { FormLabel } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 
@@ -20,7 +18,7 @@ const SignInForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const handleNavToSignup = () => navigate("/sign-up");
-  const { t } = useTranslation(["signIn"]);
+  const { t } = useTranslation(["signIn", "validations", "alerts"]);
 
   const {
     register,
@@ -49,12 +47,24 @@ const SignInForm: React.FC = () => {
         const user = accountResponse.data;
         dispatch(setUser(user));
 
-        toast.success("Login successful 🎉");
+        if (user.authorities) {
+          const lowerRoles = user.authorities.map((r: string) =>
+            r.toLowerCase()
+          );
+
+          if (lowerRoles.includes("role_doctor")) {
+            dispatch(setRole("role_doctor"));
+          } else if (lowerRoles.includes("role_representative")) {
+            dispatch(setRole("role_representative"));
+          }
+        }
+
+        toast.success(t("loginSuccess", { ns: "alerts" }));
         navigate("/");
       }
     } catch (error) {
       console.error("Login error:", error);
-      toast.error("Invalid username or password ❌");
+      toast.error(t("usernameOrPassInvalid", { ns: "alerts" }));
     }
   };
 
@@ -86,12 +96,15 @@ const SignInForm: React.FC = () => {
           {t("username", { ns: "signIn" })}
         </FormLabel>
         <TextField
-          label="Username"
-          {...register("username", { required: "Username is required" })}
+          label={t("username", { ns: "signIn" })}
+          {...register("username", {
+            required: t("usernameRequired", { ns: "validations" }),
+          })}
           error={!!errors.username}
           helperText={errors.username?.message}
           fullWidth
         />
+
         <FormLabel
           required
           sx={{
@@ -107,8 +120,10 @@ const SignInForm: React.FC = () => {
         </FormLabel>
         <TextField
           type="password"
-          label="Password"
-          {...register("password", { required: "Password is required" })}
+          label={t("password", { ns: "signIn" })}
+          {...register("password", {
+            required: t("passwordRequired", { ns: "validations" }),
+          })}
           error={!!errors.password}
           helperText={errors.password?.message}
           fullWidth
@@ -123,6 +138,7 @@ const SignInForm: React.FC = () => {
         >
           {t("signInBtn", { ns: "signIn" })}
         </Button>
+
         <Typography className="sign-up" fontWeight="bold">
           {t("dontHaveAcc", { ns: "signIn" })}
           <Button

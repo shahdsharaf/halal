@@ -1,0 +1,17 @@
+export const breadcrumbNameMap: Record<string, string> = {
+  "about-us": "aboutUs",
+  services: "services",
+  "certified-products": "certifiedProducts",
+  "accrediation-and-certifications": "accreditationAndCertifications",
+  "contact-us": "contactUs",
+  orders: "orders",
+  users: "users",
+  "create-order": "createOrder",
+  "edit-order": "editOrder",
+  "sign-in": "signIn",
+  "sign-up": "signUp",
+  "view-order": "view",
+  "order-timeline": "orderTimeline",
+  "vet-logs": "vetLogs",
+  containers: "viewContainers",
+};

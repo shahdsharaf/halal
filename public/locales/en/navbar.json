@@ -5,6 +5,11 @@
   "certifiedProducts": "Certified Products",
   "accreditationAndCertifications": "Accreditation and Certifications",
   "contactUs": "Contact Us",
-  "orders": "orders",
-  "users": "users"
+  "orders": "Orders",
+  "users": "Users",
+  "createOrder": "Create Order",
+  "signIn": "Sign In",
+  "signUp": "Sign Up",
+  "editOrder": "Edit Order",
+  "vetLogs": "Veterinary Logs"
 }

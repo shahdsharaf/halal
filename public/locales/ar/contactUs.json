@@ -21,5 +21,18 @@
   "subject": "الموضوع",
   "message": "رسالتك",
   "maxLetters": "الحد الأقصى 3000 حرف للرسالة",
-  "sendBtn": "ارسال"
+  "sendBtn": "ارسال",
+
+  "selectCountry": "اختر الدولة",
+  "USA": "الولايات المتحدة",
+  "canada": "كندا",
+  "UK": "المملكة المتحدة",
+  "india": "الهند",
+  "australia": "أستراليا",
+
+  "chooseSubject": "اختر الموضوع",
+  "inquiry": "استفسار عام",
+  "support": "دعم",
+  "feedback": "ملاحظات",
+  "partnership": "شراكة"
 }

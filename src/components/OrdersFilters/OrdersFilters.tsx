@@ -20,12 +20,16 @@ import {
 } from "../../features/orders/ordersSlice";
 import { statusMap } from "../../features/orders/statusMap";
 import { OrdersDateFilters } from "../OrderDateFilters/OrderDateFilters";
+import { useTranslation } from "react-i18next";
+
 interface OrdersFiltersProps {
   totalCount: number;
 }
 
 export const OrdersFilters: React.FC<OrdersFiltersProps> = ({ totalCount }) => {
   const theme = useTheme();
+  const { role } = useAppSelector((state) => state.auth);
+  const { t } = useTranslation(["orders"]);
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -44,7 +48,7 @@ export const OrdersFilters: React.FC<OrdersFiltersProps> = ({ totalCount }) => {
     >
       <Box display="flex" alignItems="center" gap={2}>
         <Typography variant="h5" fontWeight="bold">
-          Orders
+          {t("orders", { ns: "orders" })}
         </Typography>
         <Typography
           color="text.secondary"
@@ -57,7 +61,7 @@ export const OrdersFilters: React.FC<OrdersFiltersProps> = ({ totalCount }) => {
             fontSize: 14,
           }}
         >
-          {totalCount} Orders
+          {totalCount} {t("orders", { ns: "orders" })}
         </Typography>
       </Box>
 
@@ -69,7 +73,7 @@ export const OrdersFilters: React.FC<OrdersFiltersProps> = ({ totalCount }) => {
         width={isMobile ? "100%" : "auto"}
       >
         <TextField
-          placeholder="Halal Market Order No."
+          placeholder={t("orderNum", { ns: "orders" })}
           size="small"
           value={searchOrderNo}
           onChange={(e) => dispatch(setSearchOrderNo(e.target.value))}
@@ -98,28 +102,30 @@ export const OrdersFilters: React.FC<OrdersFiltersProps> = ({ totalCount }) => {
           fullWidth={isMobile}
         >
           <MenuItem value="" disabled>
-            <em>Filter by Status</em>
+            <em> {t("statusFilter", { ns: "orders" })}</em>
           </MenuItem>
           <MenuItem value="all">
-            <em>Select All</em>
+            <em> {t("selectAll", { ns: "orders" })}</em>
           </MenuItem>
-          {Object.entries(statusMap).map(([key, { label }]) => (
-            <MenuItem key={key} value={key}>
-              {label}
+          {Object.entries(statusMap).map(([statusId, { label: statusKey }]) => (
+            <MenuItem key={statusId} value={statusId}>
+              {t(`status.${statusKey}`, { ns: "orders" })}
             </MenuItem>
           ))}
         </Select>
 
         <OrdersDateFilters />
-        <Button
-          variant="contained"
-          color="error"
-          startIcon={<AddIcon />}
-          fullWidth={isMobile}
-          onClick={() => navigate("/orders/create-order")}
-        >
-          Create Order
-        </Button>
+        {role === "role_representative" && (
+          <Button
+            variant="contained"
+            color="error"
+            startIcon={<AddIcon />}
+            fullWidth={isMobile}
+            onClick={() => navigate("/orders/create-order")}
+          >
+            {t("createOrder", { ns: "orders" })}
+          </Button>
+        )}
       </Box>
     </Box>
   );

@@ -1,0 +1,11 @@
+{
+  "fetchFailed": "Failed to fetch order details",
+  "updateSuccessful": "Order updated successfully!",
+  "creationSuccessful": "Order created successfully!",
+  "somethingWrong": "Something went wrong",
+
+  "loginSuccess": "Login successful 🎉",
+  "usernameOrPassInvalid": "Invalid username or password ❌",
+
+  "formSubmitted": "form submitted, check console for data"
+}

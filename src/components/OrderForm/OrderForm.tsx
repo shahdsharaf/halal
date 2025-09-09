@@ -17,6 +17,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { grey } from "@mui/material/colors";
 import TonsIcon from "../../assets/img/tons-icon.svg";
+import { useTranslation } from "react-i18next";
 import "./order-form.scss";
 const countries = [
   { id: "1", labelEn: "India", labelAr: "" },
@@ -48,6 +49,7 @@ export const OrderForm: React.FC = () => {
   const today = dayjs().format("YYYY-MM-DD");
   const [loading, setIsLoading] = useState(false);
   const [order, setOrder] = useState<any>(null);
+  const { t } = useTranslation(["alerts"]);
 
   const {
     register,
@@ -102,7 +104,7 @@ export const OrderForm: React.FC = () => {
         setIsLoading(false);
       })
       .catch(() => {
-        toast.error("Failed to fetch order details");
+        toast.error(t("fetchError", { ns: "alerts" }));
         setIsLoading(false);
       });
   }, [id, reset]);
@@ -129,13 +131,13 @@ export const OrderForm: React.FC = () => {
           "http://41.33.54.162:8085/halalcore/api/company-orders/update",
           payload
         );
-        toast.success("Order updated successfully!");
+        toast.success(t("updateSuccessful", { ns: "alerts" }));
       } else {
         await axios.post(
           "http://41.33.54.162:8085/halalcore/api/company-orders",
           payload
         );
-        toast.success("Order created successfully!");
+        toast.success(t("creationSuccessful", { ns: "alerts" }));
       }
 
       navigate("/orders");
@@ -145,7 +147,7 @@ export const OrderForm: React.FC = () => {
       } else if (error instanceof Error) {
         toast.error(error.message);
       } else {
-        toast.error("Something went wrong");
+        toast.error(t("somethingWrong", { ns: "alerts" }));
       }
     }
   };

@@ -1,0 +1,15 @@
+{
+  "usernameRequired": "Username is required",
+  "passwordRequired": "Password is required",
+
+  "fNameRequired": "First name is required",
+  "lNameRequired": "Last name is required",
+  "emailRequired": "Email is required",
+  "invalidEmail": "Enter a valid email",
+  "phoneRequired": "Phone number is required",
+  "countryRequired": "Country is required",
+  "subjectRequired": "Subject is required",
+  "msgRequired": "Message is required",
+
+  "loadError": " Failed to load orders."
+}

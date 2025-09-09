@@ -21,5 +21,18 @@
   "subject": "Subject",
   "message": "Your Message",
   "maxLetters": "Maximum letter 3000 for your message",
-  "sendBtn": "Send"
+  "sendBtn": "Send",
+
+  "selectCountry": "Select Country",
+  "USA": "USA",
+  "canada": "Canada",
+  "UK": "UK",
+  "india": "India",
+  "australia": "Australia",
+
+  "chooseSubject": "Choose your subject",
+  "inquiry": "General inquiry",
+  "support": "Support",
+  "feedback": "Feedback",
+  "partnership": "Partnership"
 }

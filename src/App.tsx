@@ -20,6 +20,7 @@ import { useAppSelector } from "./app/hooks";
 import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { VeterinaryLogs } from "./pages/VeterinaryLogs/VeterinaryLogs";
 
 function App() {
   const { token } = useAppSelector((state) => state.auth);
@@ -49,7 +50,9 @@ function App() {
           <Route
             path="/orders"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute
+                allowedRoles={["role_representative", "role_doctor"]}
+              >
                 <Orders />
               </ProtectedRoute>
             }
@@ -57,7 +60,7 @@ function App() {
           <Route
             path="/users"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={["role_representative"]}>
                 <Users />
               </ProtectedRoute>
             }
@@ -65,7 +68,7 @@ function App() {
           <Route
             path="/orders/create-order"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={["role_representative"]}>
                 <CreateOrder />
               </ProtectedRoute>
             }
@@ -73,8 +76,17 @@ function App() {
           <Route
             path="/orders/:id/edit-order"
             element={
-              <ProtectedRoute>
-                <EditOrder />{" "}
+              <ProtectedRoute allowedRoles={["role_representative"]}>
+                <EditOrder />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/orders/:orderId/vet-logs"
+            element={
+              <ProtectedRoute allowedRoles={["role_doctor"]}>
+                <VeterinaryLogs />
               </ProtectedRoute>
             }
           />

@@ -34,9 +34,7 @@ export const Navbar = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [drawerOpen, setDrawerOpen] = useState(false);
   const dispatch = useDispatch();
-  const { isAuthenticated, user } = useSelector(
-    (state: RootState) => state.auth
-  );
+
   const langs = [
     { Label: t("english", { ns: "general" }), value: "en", dir: "ltr" },
     { Label: t("arabic", { ns: "general" }), value: "ar", dir: "rtl" },
@@ -75,10 +73,19 @@ export const Navbar = () => {
     { label: t("contactUs", { ns: "navbar" }), path: "/contact-us" },
   ];
 
-  const userNavItems = [
-    { label: t("orders", { ns: "navbar" }), path: "/orders" },
-    { label: t("users", { ns: "navbar" }), path: "/users" },
-  ];
+  const { isAuthenticated, user, role } = useSelector(
+    (state: RootState) => state.auth
+  );
+  const userNavItems =
+    role === "role_doctor"
+      ? [{ label: t("orders", { ns: "navbar" }), path: "/orders" }]
+      : role === "role_representative"
+      ? [
+          { label: t("orders", { ns: "navbar" }), path: "/orders" },
+          { label: t("users", { ns: "navbar" }), path: "/users" },
+        ]
+      : [];
+
 
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);

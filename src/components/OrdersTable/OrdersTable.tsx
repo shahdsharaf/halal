@@ -17,11 +17,12 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useNavigate } from "react-router-dom";
-import { useOrders } from "../../features/orders/api";
+import { useOrders } from "../../features/orders/useOrders";
 import type { Order } from "../../features/orders/types";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { setPage } from "../../features/orders/ordersSlice";
 import OrderStatusChip from "../../features/orders/OrdersStatusChip";
+import { useTranslation } from "react-i18next";
 
 interface OrdersTableProps {
   onTotalCount: (count: number) => void;
@@ -31,6 +32,8 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({ onTotalCount }) => {
   const navigate = useNavigate();
   const { searchOrderNo, status, page, pageSize, dateFrom, dateTo } =
     useAppSelector((state) => state.ordersFilters);
+  const { t } = useTranslation(["orders", "validations"]);
+  const { role } = useAppSelector((state) => state.auth);
 
   const { data, isLoading, isError } = useOrders(
     page - 1,
@@ -75,6 +78,16 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({ onTotalCount }) => {
     handleMenuClose();
   };
 
+  const handleVetLogs = () => {
+    if (selectedOrder) navigate(`/orders/${selectedOrder.id}/vet-logs`);
+    handleMenuClose();
+  };
+
+  const handleViewContainers = () => {
+    if (selectedOrder) navigate(`/orders/${selectedOrder.id}/containers`);
+    handleMenuClose();
+  };
+
   useEffect(() => {
     onTotalCount(totalCount);
   }, [totalCount, onTotalCount]);
@@ -89,7 +102,7 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({ onTotalCount }) => {
   if (isError)
     return (
       <Typography color="error" align="center" my={4}>
-        Failed to load orders.
+        {t("loadError", { ns: "validations" })}
       </Typography>
     );
 
@@ -99,13 +112,17 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({ onTotalCount }) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Halal Market Order No.</TableCell>
-              <TableCell>Importer Company</TableCell>
-              <TableCell>Requested Production Weight</TableCell>
-              <TableCell>Start Date</TableCell>
-              <TableCell>End Date</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              <TableCell> {t("orderNum", { ns: "orders" })}</TableCell>
+              <TableCell>{t("importerCompany", { ns: "orders" })}</TableCell>
+              <TableCell>
+                {t("requestedProductionWeight", { ns: "orders" })}
+              </TableCell>
+              <TableCell>{t("startDate", { ns: "orders" })}</TableCell>
+              <TableCell>{t("endDate", { ns: "orders" })}</TableCell>
+              <TableCell>{t("status.title", { ns: "orders" })}</TableCell>
+              <TableCell align="right">
+                {t("actions", { ns: "orders" })}
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -135,9 +152,30 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({ onTotalCount }) => {
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={handleView}>View</MenuItem>
-        <MenuItem onClick={handleEdit}>Edit</MenuItem>
-        <MenuItem onClick={handleTimeline}>Order Timeline</MenuItem>
+        {role === "role_representative" && (
+          <>
+            <MenuItem onClick={handleView}>
+              {t("view", { ns: "orders" })}
+            </MenuItem>
+            <MenuItem onClick={handleEdit}>
+              {t("edit", { ns: "orders" })}
+            </MenuItem>
+            <MenuItem onClick={handleTimeline}>
+              {t("orderTimeline", { ns: "orders" })}
+            </MenuItem>
+          </>
+        )}
+
+        {role === "role_doctor" && (
+          <>
+            <MenuItem onClick={handleVetLogs}>
+              {t("vetLogs", { ns: "orders" })}
+            </MenuItem>
+            <MenuItem onClick={handleViewContainers}>
+              {t("viewContainers", { ns: "orders" })}
+            </MenuItem>
+          </>
+        )}
       </Menu>
 
       <Box display="flex" justifyContent="center" my={2}>

@@ -1,0 +1,35 @@
+{
+  "orders": "Orders",
+  "orderNum": "Halal Market Order No.",
+  "statusFilter": "Filter by status",
+  "selectAll": "Select All",
+  "createOrder": "Create Order",
+  "status": {
+    "title": "Status",
+    "new": "New",
+    "active": "Active",
+    "awaitingDocument": "Awaiting Document",
+    "readyForShipment": "Ready for Shipment",
+    "completed": "Completed",
+    "underReview": "Under Review",
+    "paymentSettlement": "Payment Settlement"
+  },
+  "startDate": "Start Date",
+  "endDate": "End Date",
+  "importerCompany": "Importer Company",
+  "requestedProductionWeight": "Requested Production Weight",
+  "actions": "Actions",
+  "view": "view",
+  "edit": "Edit",
+  "orderTimeline": "orderTimeline",
+  "vetLogs": "Veterinary Logs",
+  "viewContainers": "View Containers",
+  "orderDetailsHistory": "Order Details History",
+  "logs": "Logs",
+
+  "weightBefore": "Weight Before",
+  "weightMeat": "Weight Meat",
+  "weightOffals": "Weight Offals",
+  "dateTime": "Date & Time",
+  "noData": "No data to show"
+}

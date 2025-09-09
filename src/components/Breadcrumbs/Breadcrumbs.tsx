@@ -1,11 +1,12 @@
 import { Breadcrumbs, Link, Typography } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import { capitalize } from "@mui/material/utils";
+import { useTranslation } from "react-i18next";
+import { breadcrumbNameMap } from "../../features/nav/breadcrumbMap";
 
 export const AppBreadcrumbs = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
+  const { t } = useTranslation(["navbar"]);
   const pathnames = location.pathname.split("/").filter((x) => x);
 
   if (location.pathname === "/") return null;
@@ -22,7 +23,7 @@ export const AppBreadcrumbs = () => {
         onClick={() => navigate("/")}
         sx={{ cursor: "pointer" }}
       >
-        Home
+        {t("home", { ns: "navbar" })}
       </Link>
 
       {pathnames.map((value, index) => {
@@ -32,9 +33,14 @@ export const AppBreadcrumbs = () => {
         const isId = /^\d+$/.test(value);
         if (isId) return null;
 
+        const translationKey = breadcrumbNameMap[value];
+        const label = translationKey
+          ? t(translationKey, { ns: "navbar" })
+          : value;
+
         return isLast ? (
           <Typography key={to} color="inherit">
-            {capitalize(value.replace(/-/g, " "))}
+            {label}
           </Typography>
         ) : (
           <Link
@@ -44,7 +50,7 @@ export const AppBreadcrumbs = () => {
             onClick={() => navigate(to)}
             sx={{ cursor: "pointer" }}
           >
-            {capitalize(value.replace(/-/g, " "))}
+            {label}
           </Link>
         );
       })}

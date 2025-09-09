@@ -11,18 +11,20 @@ import dayjs, { Dayjs } from "dayjs";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { setDateFrom, setDateTo } from "../../features/orders/ordersSlice";
 import ClearIcon from "@mui/icons-material/Clear";
+import { useTranslation } from "react-i18next";
 
 export const OrdersDateFilters = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const dispatch = useAppDispatch();
   const { dateFrom, dateTo } = useAppSelector((state) => state.ordersFilters);
+  const { t } = useTranslation(["orders"]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box display="flex" gap={2} flexDirection={isMobile ? "column" : "row"}>
         <DatePicker
-          label="Start Date"
+          label={t("startDate", { ns: "orders" })}
           value={dateFrom ? dayjs(dateFrom) : null}
           onChange={(newValue: Dayjs | null) =>
             dispatch(
@@ -50,7 +52,7 @@ export const OrdersDateFilters = () => {
         />
 
         <DatePicker
-          label="End Date"
+          label={t("endDate", { ns: "orders" })}
           value={dateTo ? dayjs(dateTo) : null}
           onChange={(newValue: Dayjs | null) =>
             dispatch(setDateTo(newValue ? newValue.format("YYYY-MM-DD") : null))

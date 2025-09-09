@@ -1,0 +1,14 @@
+{
+  "usernameRequired": "اسم المستخدم مطلوب",
+  "passwordRequired": "كلمة المرور مطلوبة",
+
+  "fNameRequired": "الاسم الأول مطلوب",
+  "lNameRequired": "اسم العائلة مطلوب",
+  "emailRequired": "البريد الإلكتروني مطلوب",
+  "invalidEmail": "أدخل بريدًا إلكترونيًا صالحًا",
+  "phoneRequired": "رقم الهاتف مطلوب",
+  "countryRequired": "الدولة مطلوبة",
+  "subjectRequired": "الموضوع مطلوب",
+  "msgRequired": "الرسالة مطلوبة",
+  "loadError": "فشل في تحميل الطلبات."
+}

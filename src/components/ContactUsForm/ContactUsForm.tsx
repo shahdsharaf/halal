@@ -12,6 +12,7 @@ import {
   FormLabel,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 type FormInputs = {
   firstName: string;
@@ -24,7 +25,7 @@ type FormInputs = {
 };
 
 export default function ContactUsForm() {
-  const { t } = useTranslation(["contactUs"]);
+  const { t } = useTranslation(["contactUs", "validations", "alerts"]);
 
   const {
     handleSubmit,
@@ -34,7 +35,7 @@ export default function ContactUsForm() {
 
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
     console.log(data);
-    alert("Form submitted! Check console for data.");
+    toast.success(t("formSubmitted", { ns: "alerts" }));
   };
 
   return (
@@ -54,7 +55,7 @@ export default function ContactUsForm() {
       <Controller
         name="firstName"
         control={control}
-        rules={{ required: "First name is required" }}
+        rules={{ required: t("fNameRequired", { ns: "validations" }) }}
         render={({ field }) => (
           <>
             <FormLabel
@@ -81,7 +82,7 @@ export default function ContactUsForm() {
       <Controller
         name="lastName"
         control={control}
-        rules={{ required: "Last name is required" }}
+        rules={{ required: t("lNameRequired", { ns: "validations" }) }}
         render={({ field }) => (
           <>
             <FormLabel
@@ -109,10 +110,10 @@ export default function ContactUsForm() {
         name="email"
         control={control}
         rules={{
-          required: "Email is required",
+          required: t("emailRequired", { ns: "validations" }),
           pattern: {
             value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-            message: "Enter a valid email",
+            message: t("invalidEmail", { ns: "validations" }),
           },
         }}
         render={({ field }) => (
@@ -142,7 +143,7 @@ export default function ContactUsForm() {
       <Controller
         name="phoneNumber"
         control={control}
-        rules={{ required: "Phone number is required" }}
+        rules={{ required: t("phoneRequired", { ns: "validations" }) }}
         render={({ field }) => (
           <>
             <FormLabel
@@ -169,7 +170,7 @@ export default function ContactUsForm() {
       <Controller
         name="country"
         control={control}
-        rules={{ required: "Country is required" }}
+        rules={{ required: t("countryRequired", { ns: "validations" }) }}
         render={({ field }) => (
           <FormControl fullWidth margin="normal" error={!!errors.country}>
             <FormLabel
@@ -183,12 +184,24 @@ export default function ContactUsForm() {
               {t("country", { ns: "contactUs" })}
             </FormLabel>
             <Select {...field} displayEmpty>
-              <MenuItem value="">Select Country</MenuItem>
-              <MenuItem value="usa">United States</MenuItem>
-              <MenuItem value="canada">Canada</MenuItem>
-              <MenuItem value="uk">United Kingdom</MenuItem>
-              <MenuItem value="india">India</MenuItem>
-              <MenuItem value="australia">Australia</MenuItem>
+              <MenuItem value="" disabled>
+                {" "}
+                {t("selectCountry", { ns: "contactUs" })}
+              </MenuItem>
+              <MenuItem value="usa"> {t("USA", { ns: "contactUs" })}</MenuItem>
+              <MenuItem value="canada">
+                {" "}
+                {t("canada", { ns: "contactUs" })}
+              </MenuItem>
+              <MenuItem value="uk"> {t("UK", { ns: "contactUs" })}</MenuItem>
+              <MenuItem value="india">
+                {" "}
+                {t("india", { ns: "contactUs" })}
+              </MenuItem>
+              <MenuItem value="australia">
+                {" "}
+                {t("australia", { ns: "contactUs" })}
+              </MenuItem>
             </Select>
             <FormHelperText>{errors.country?.message}</FormHelperText>
           </FormControl>
@@ -198,7 +211,7 @@ export default function ContactUsForm() {
       <Controller
         name="subject"
         control={control}
-        rules={{ required: "Subject is required" }}
+        rules={{ required: t("subjectRequired", { ns: "validations" }) }}
         render={({ field }) => (
           <FormControl fullWidth margin="normal" error={!!errors.subject}>
             <FormLabel
@@ -212,11 +225,26 @@ export default function ContactUsForm() {
               {t("subject", { ns: "contactUs" })}
             </FormLabel>
             <Select {...field} displayEmpty>
-              <MenuItem value="">Choose your subject</MenuItem>
-              <MenuItem value="general">General Inquiry</MenuItem>
-              <MenuItem value="support">Support</MenuItem>
-              <MenuItem value="feedback">Feedback</MenuItem>
-              <MenuItem value="partnership">Partnership</MenuItem>
+              <MenuItem value="" disabled>
+                {" "}
+                {t("chooseSubject", { ns: "contactUs" })}
+              </MenuItem>
+              <MenuItem value="general">
+                {" "}
+                {t("inquiry", { ns: "contactUs" })}
+              </MenuItem>
+              <MenuItem value="support">
+                {" "}
+                {t("support", { ns: "contactUs" })}
+              </MenuItem>
+              <MenuItem value="feedback">
+                {" "}
+                {t("feedback", { ns: "contactUs" })}
+              </MenuItem>
+              <MenuItem value="partnership">
+                {" "}
+                {t("partnership", { ns: "contactUs" })}
+              </MenuItem>
             </Select>
             <FormHelperText>{errors.subject?.message}</FormHelperText>
           </FormControl>
@@ -227,7 +255,7 @@ export default function ContactUsForm() {
         name="message"
         control={control}
         rules={{
-          required: "Message is required",
+          required: t("msgRequired", { ns: "validations" }),
           maxLength: {
             value: 3000,
             message: t("maxLetters", { ns: "contactUs" }),

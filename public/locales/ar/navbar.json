@@ -6,5 +6,10 @@
   "accreditationAndCertifications": "الاعتمادات والشهادات",
   "contactUs": "اتصل بنا",
   "orders": "الطلبات",
-  "users": "المستخدمون"
+  "users": "المستخدمون",
+  "createOrder": "إنشاء طلب",
+  "signIn": "تسجيل الدخول",
+  "signUp": "إنشاء حساب",
+  "editOrder": "تعديل الطلب",
+  "vetLogs": "سجلات الطبيب البيطري"
 }

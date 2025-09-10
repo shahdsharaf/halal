@@ -46,6 +46,7 @@ const SignInForm: React.FC = () => {
 
         const user = accountResponse.data;
         dispatch(setUser(user));
+        let roleToNavigate = "/";
 
         if (user.authorities) {
           const lowerRoles = user.authorities.map((r: string) =>
@@ -54,13 +55,16 @@ const SignInForm: React.FC = () => {
 
           if (lowerRoles.includes("role_doctor")) {
             dispatch(setRole("role_doctor"));
+            roleToNavigate = "/orders";
           } else if (lowerRoles.includes("role_representative")) {
             dispatch(setRole("role_representative"));
+            roleToNavigate = "/";
           }
         }
 
         toast.success(t("loginSuccess", { ns: "alerts" }));
-        navigate("/");
+
+        navigate(roleToNavigate); 
       }
     } catch (error) {
       console.error("Login error:", error);

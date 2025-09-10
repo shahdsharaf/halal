@@ -1,0 +1,28 @@
+.order-details-card {
+  margin-top: 1.5rem;
+  background-color: #f9f9f9;
+}
+
+.order-details-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #ddd;
+
+  > * {
+    flex: 1;
+  }
+
+  &.single {
+    flex-direction: column;
+    border-bottom: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .order-details-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

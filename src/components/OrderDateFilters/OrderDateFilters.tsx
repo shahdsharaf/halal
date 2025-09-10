@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { setDateFrom, setDateTo } from "../../features/orders/ordersSlice";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 export const OrdersDateFilters = () => {
   const theme = useTheme();
@@ -19,6 +20,10 @@ export const OrdersDateFilters = () => {
   const dispatch = useAppDispatch();
   const { dateFrom, dateTo } = useAppSelector((state) => state.ordersFilters);
   const { t } = useTranslation(["orders"]);
+  useEffect(() => {
+    dispatch(setDateFrom(null));
+    dispatch(setDateTo(null));
+  }, [dispatch]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>

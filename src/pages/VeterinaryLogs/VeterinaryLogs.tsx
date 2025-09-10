@@ -8,8 +8,8 @@ export const VeterinaryLogs = () => {
   return (
     <div>
       <OrderDetailsFilters totalCount={totalCount} />
+
       <OrderDetailsTable onTotalCount={setTotalCount} />
-      {/* other component */}
       <SignInFooter />
     </div>
   );

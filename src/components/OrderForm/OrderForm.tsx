@@ -227,11 +227,11 @@ export const OrderForm: React.FC = () => {
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <span style={{ marginLeft: 4 }}>Tons</span>
+                  <span style={{ marginInlineStart: 4 }}>Tons</span>
                   <img
                     src={TonsIcon}
                     alt="tons icon"
-                    style={{ width: 18, height: 18, marginLeft: 4 }}
+                    style={{ width: 18, height: 18, marginInlineStart: 4 }}
                   />
                 </InputAdornment>
               ),

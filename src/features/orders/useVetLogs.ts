@@ -12,16 +12,14 @@ export interface VetLog {
   weightMeat: number;
   weightOffals: number;
   logDateTime: string;
-  status: string | null;
+  status: number;
 }
-
-const fetchVetLogs = async (
+const fetchAllVetLogs = async (
+  orderId: number,
   page: number,
   size: number,
-  orderId: number,
-  id?: string,
-  dateFrom?: string,
-  dateTo?: string
+  dateFrom?: string | null,
+  dateTo?: string | null
 ): Promise<{ logs: VetLog[]; totalCount: number }> => {
   const res = await axios.get(
     "http://41.33.54.162:8085/halalcore/api/order-vet-logs/search",
@@ -30,7 +28,7 @@ const fetchVetLogs = async (
         page,
         size,
         orderId,
-        id: id || null,
+        id: "",
         dateFrom: dateFrom || "",
         dateTo: dateTo || "",
       },
@@ -41,21 +39,22 @@ const fetchVetLogs = async (
 
   return {
     logs,
-    totalCount: logs.length,
+    totalCount: parseInt(res.headers["x-total-count"] ?? "0", 10),
   };
 };
 
 export const useVetLogs = (
+  orderId: number,
   page: number,
   size: number,
-  orderId: number,
-  id?: string,
-  dateFrom?: string,
-  dateTo?: string
+  dateFrom?: string | null,
+  dateTo?: string | null
 ) => {
   return useQuery({
-    queryKey: ["vetLogs", page, size, orderId, id, dateFrom, dateTo],
-    queryFn: () => fetchVetLogs(page, size, orderId, id, dateFrom, dateTo),
+    queryKey: ["vetLogs", orderId, page, size, dateFrom, dateTo], // include filters in key
+    queryFn: () => fetchAllVetLogs(orderId, page, size, dateFrom, dateTo),
     placeholderData: keepPreviousData,
+    enabled: !!orderId,
   });
 };
+

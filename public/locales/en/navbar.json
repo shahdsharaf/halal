@@ -11,5 +11,6 @@
   "signIn": "Sign In",
   "signUp": "Sign Up",
   "editOrder": "Edit Order",
-  "vetLogs": "Veterinary Logs"
+  "vetLogs": "Veterinary Logs",
+  "createLog": "Create Log"
 }

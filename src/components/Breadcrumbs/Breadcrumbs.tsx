@@ -15,7 +15,7 @@ export const AppBreadcrumbs = () => {
     <Breadcrumbs
       separator="/ "
       aria-label="breadcrumb"
-      sx={{ my: 2, fontSize: "1rem", ml: 4 }}
+      sx={{ my: 2, fontSize: "1rem", marginInlineStart: "20px" }}
     >
       <Link
         underline="hover"

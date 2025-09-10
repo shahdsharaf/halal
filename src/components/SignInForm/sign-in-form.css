@@ -1,6 +1,6 @@
 @media (min-width: 770px) {
   .signin-form {
-    padding-right: 40px;
+    padding-inline-end: 40px;
   }
 }
 @media (max-width: 770px) {

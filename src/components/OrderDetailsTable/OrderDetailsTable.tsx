@@ -17,10 +17,9 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useVetLogs } from "../../features/orders/useVetLogs";
-import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { setPage } from "../../features/orders/ordersSlice";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
+import { useAppSelector } from "../../app/hooks";
 
 interface VetLogsTableProps {
   onTotalCount: (count: number) => void;
@@ -29,23 +28,30 @@ interface VetLogsTableProps {
 export const OrderDetailsTable: React.FC<VetLogsTableProps> = ({
   onTotalCount,
 }) => {
-  const dispatch = useAppDispatch();
-  const { page, pageSize } = useAppSelector((state) => state.ordersFilters);
   const { t } = useTranslation(["orders", "validations"]);
   const { orderId } = useParams<{ orderId: string }>();
+  const { dateFrom, dateTo } = useAppSelector((state) => state.ordersFilters);
 
-  const { data, isLoading, isError } = useVetLogs(
-    page - 1,
-    pageSize,
-    Number(orderId)
-  );
-
-  const totalCount = data?.totalCount ?? 0;
-  const logs = data?.logs ?? [];
-
+  const [currentPage, setCurrentPage] = useState(1);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedLog, setSelectedLog] = useState<number | null>(null);
 
+  const itemsPerPage = 10;
+
+  const { data, isLoading, isError } = useVetLogs(
+    Number(orderId),
+    currentPage - 1,
+    itemsPerPage,
+    dateFrom,
+    dateTo
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [dateFrom, dateTo]);
+
+  const totalCount = data?.totalCount ?? 0;
+  const logs = data?.logs ?? [];
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, id: number) => {
     setAnchorEl(event.currentTarget);
     setSelectedLog(id);
@@ -123,6 +129,7 @@ export const OrderDetailsTable: React.FC<VetLogsTableProps> = ({
           mt={2}
           fontWeight="bold"
           fontSize="25px"
+          minHeight="27vh"
         >
           {t("noData", { ns: "orders" })}
         </Typography>
@@ -140,9 +147,9 @@ export const OrderDetailsTable: React.FC<VetLogsTableProps> = ({
 
       <Box display="flex" justifyContent="center" my={2}>
         <Pagination
-          count={Math.ceil(totalCount / pageSize) || 1}
-          page={page}
-          onChange={(_, value) => dispatch(setPage(value))}
+          count={Math.ceil(totalCount / itemsPerPage)}
+          page={currentPage}
+          onChange={(_, value) => setCurrentPage(value)}
         />
       </Box>
     </Box>

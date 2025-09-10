@@ -14,4 +14,5 @@ export const breadcrumbNameMap: Record<string, string> = {
   "order-timeline": "orderTimeline",
   "vet-logs": "vetLogs",
   containers: "viewContainers",
+  "add-log": "createLog",
 };

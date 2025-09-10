@@ -21,6 +21,7 @@ import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { VeterinaryLogs } from "./pages/VeterinaryLogs/VeterinaryLogs";
+import { CreateLog } from "./pages/CreateLog/CreateLog";
 
 function App() {
   const { token } = useAppSelector((state) => state.auth);
@@ -87,6 +88,15 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={["role_doctor"]}>
                 <VeterinaryLogs />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/orders/:orderId/vet-logs/add-log"
+            element={
+              <ProtectedRoute allowedRoles={["role_doctor"]}>
+                <CreateLog />
               </ProtectedRoute>
             }
           />
